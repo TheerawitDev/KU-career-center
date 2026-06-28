@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 mt-4 pb-12">
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12 -mt-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>

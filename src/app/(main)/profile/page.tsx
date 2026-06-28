@@ -39,8 +39,14 @@ export default function ProfilePage() {
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto pb-10">
       {/* Profile Header */}
-      <Card className="border-none shadow-sm overflow-hidden bg-white">
-        <div className="h-32 bg-gradient-to-r from-green-600 to-indigo-600"></div>
+      <Card className="border-none shadow-sm overflow-hidden bg-white p-0">
+        <div className="h-40 w-full relative bg-slate-100">
+          <img 
+            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop" 
+            alt="Profile Banner" 
+            className="w-full h-full object-cover"
+          />
+        </div>
         <div className="px-6 pb-6 relative">
           <div className="flex justify-between items-end -mt-12 mb-4">
             <Avatar className="w-24 h-24 border-4 border-white shadow-sm">
