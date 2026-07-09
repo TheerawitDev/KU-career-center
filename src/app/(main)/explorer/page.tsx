@@ -15,9 +15,9 @@ const roles = [
     category: "เทคโนโลยี",
     icon: Code,
     match: 95,
-    salary: "฿35k - ฿60k",
+    salary: "฿35k - ฿80k",
     demand: "สูงมาก",
-    skills: ["React", "Node.js", "Python", "SQL"],
+    skills: ["React", "Node.js", "Python", "SQL", "Go"],
     description: "พัฒนาและดูแลรักษาระบบซอฟต์แวร์ทั้ง Front-end และ Back-end รวมถึงการออกแบบสถาปัตยกรรมระบบ"
   },
   {
@@ -26,7 +26,7 @@ const roles = [
     category: "วิศวกรรม",
     icon: Building2,
     match: 85,
-    salary: "฿25k - ฿45k",
+    salary: "฿25k - ฿55k",
     demand: "สูง",
     skills: ["AutoCAD", "Structural Design", "Concrete", "Project Planning"],
     description: "ออกแบบ ควบคุมงานก่อสร้าง และวางแผนโครงสร้างพื้นฐาน อาคาร สะพาน และระบบสาธารณูปโภค"
@@ -37,7 +37,7 @@ const roles = [
     category: "วิศวกรรม",
     icon: Settings,
     match: 80,
-    salary: "฿28k - ฿50k",
+    salary: "฿28k - ฿60k",
     demand: "สูง",
     skills: ["SolidWorks", "Thermodynamics", "CAD/CAM", "Maintenance"],
     description: "ออกแบบ วิเคราะห์ ควบคุมระบบการผลิต และดูแลรักษาเครื่องจักรกลรวมถึงระบบทางกลต่างๆ"
@@ -48,65 +48,98 @@ const roles = [
     category: "ข้อมูล",
     icon: TrendingUp,
     match: 82,
-    salary: "฿40k - ฿70k",
+    salary: "฿45k - ฿90k",
     demand: "สูงมาก",
-    skills: ["Python", "SQL", "Spark", "Cloud"],
+    skills: ["Python", "SQL", "Spark", "Cloud", "ETL"],
     description: "ออกแบบและสร้างโครงสร้างพื้นฐานสำหรับจัดเก็บ รวบรวม และประมวลผลข้อมูลขนาดใหญ่สำหรับองค์กร"
   },
   {
     id: 5,
+    title: "DevOps / SRE Engineer",
+    category: "เทคโนโลยี",
+    icon: Settings,
+    match: 78,
+    salary: "฿45k - ฿100k",
+    demand: "สูงมาก",
+    skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Linux"],
+    description: "เชื่อมต่อการพัฒนาและการปฏิบัติการ (Operations) ดูแลระบบคลาวด์และทำให้ระบบมีเสถียรภาพสูงสุด"
+  },
+  {
+    id: 6,
     title: "Electrical Control Engineer",
     category: "วิศวกรรม",
     icon: Zap,
     match: 75,
-    salary: "฿30k - ฿50k",
+    salary: "฿30k - ฿55k",
     demand: "สูง",
     skills: ["PLC", "AutoCAD", "Circuit Design", "Automation"],
     description: "ออกแบบและควบคุมระบบไฟฟ้า ระบบเครื่องมือวัด และระบบอัตโนมัติในกระบวนการผลิตอุตสาหกรรม"
   },
   {
-    id: 6,
+    id: 7,
     title: "Industrial Engineer",
     category: "การจัดการ",
     icon: Briefcase,
     match: 70,
-    salary: "฿26k - ฿48k",
+    salary: "฿26k - ฿50k",
     demand: "สูง",
     skills: ["Lean Six Sigma", "Operations Research", "Quality Control", "Supply Chain"],
     description: "ปรับปรุงและเพิ่มประสิทธิภาพกระบวนการทำงานในโรงงานเพื่อลดต้นทุนและเพิ่มประสิทธิภาพสูงสุด"
   },
   {
-    id: 7,
+    id: 8,
+    title: "Cybersecurity Analyst",
+    category: "เทคโนโลยี",
+    icon: FileText,
+    match: 72,
+    salary: "฿40k - ฿85k",
+    demand: "สูงมาก",
+    skills: ["Network Security", "Penetration Testing", "SIEM", "Cryptography"],
+    description: "ตรวจสอบและป้องกันระบบเครือข่ายและข้อมูลขององค์กรจากการโจมตีทางไซเบอร์"
+  },
+  {
+    id: 9,
+    title: "HVAC Engineer",
+    category: "วิศวกรรม",
+    icon: Settings,
+    match: 65,
+    salary: "฿28k - ฿55k",
+    demand: "ปานกลาง",
+    skills: ["Thermodynamics", "AutoCAD", "Energy Audit", "MEP Design"],
+    description: "ออกแบบและควบคุมระบบปรับอากาศ ระบายอากาศ และทำความเย็นในอาคารหรือโรงงานอุตสาหกรรม"
+  },
+  {
+    id: 10,
+    title: "Embedded Systems Engineer",
+    category: "เทคโนโลยี",
+    icon: Code,
+    match: 80,
+    salary: "฿35k - ฿75k",
+    demand: "สูง",
+    skills: ["C/C++", "Microcontrollers", "RTOS", "Hardware Debugging"],
+    description: "พัฒนาซอฟต์แวร์ระดับต่ำ (Low-level) ที่ทำงานร่วมกับฮาร์ดแวร์โดยตรง สำหรับอุปกรณ์ IoT และยานยนต์"
+  },
+  {
+    id: 11,
     title: "Chemical Process Engineer",
     category: "วิศวกรรม",
     icon: Settings,
     match: 65,
-    salary: "฿35k - ฿60k",
+    salary: "฿35k - ฿70k",
     demand: "ปานกลาง",
     skills: ["Process Design", "Aspen HYSYS", "Safety Regulations", "Chemistry"],
     description: "ควบคุมและพัฒนากระบวนการผลิตทางเคมี พลังงาน ปิโตรเคมี และวางแผนความปลอดภัยในกระบวนการ"
   },
   {
-    id: 8,
+    id: 12,
     title: "Environmental Engineer",
     category: "วิศวกรรม",
     icon: Building2,
     match: 60,
-    salary: "฿24k - ฿42k",
+    salary: "฿24k - ฿45k",
     demand: "ปานกลาง",
     skills: ["Water Treatment", "Environmental Auditing", "Waste Management", "GIS"],
     description: "ออกแบบและควบคุมระบบบำบัดน้ำเสีย การจัดการมลพิษทางอากาศ และระบบรีไซเคิลของเสีย"
-  },
-  {
-    id: 9,
-    title: "Aerospace Engineer",
-    category: "วิศวกรรม",
-    icon: Settings,
-    match: 55,
-    salary: "฿35k - ฿70k",
-    demand: "ปานกลาง",
-    skills: ["Aerodynamics", "Propulsion", "CAD", "Aircraft Maintenance"],
-    description: "วิเคราะห์ ออกแบบ และบำรุงรักษาโครงสร้าง อากาศยาน ชิ้นส่วนเครื่องบิน และระบบดาวเทียม"
   }
 ];
 

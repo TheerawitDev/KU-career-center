@@ -6,56 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Building, Star, Clock, Briefcase } from "lucide-react";
 
-const internships = [
-  {
-    id: 1,
-    title: "Software Engineering Intern",
-    company: "Tech Innovation Co., Ltd.",
-    location: "Bangkok / Hybrid",
-    type: "ฝึกงานฤดูร้อน",
-    rating: 4.8,
-    reviews: 12,
-    tags: ["React", "Node.js", "TypeScript"],
-    posted: "2 วันที่แล้ว",
-    logo: "T"
-  },
-  {
-    id: 2,
-    title: "Data Analyst Intern",
-    company: "FinTech Thailand",
-    location: "Sathon, Bangkok",
-    type: "สหกิจศึกษา",
-    rating: 4.5,
-    reviews: 8,
-    tags: ["Python", "SQL", "Tableau"],
-    posted: "1 สัปดาห์ที่แล้ว",
-    logo: "F"
-  },
-  {
-    id: 3,
-    title: "Electrical Engineering Trainee",
-    company: "Siam Energy",
-    location: "Rayong",
-    type: "ฝึกงานฤดูร้อน",
-    rating: 4.2,
-    reviews: 24,
-    tags: ["Power Systems", "AutoCAD"],
-    posted: "3 วันที่แล้ว",
-    logo: "S"
-  },
-  {
-    id: 4,
-    title: "Cloud Infrastructure Intern",
-    company: "CloudTech",
-    location: "Remote",
-    type: "ฝึกงานฤดูร้อน",
-    rating: 4.9,
-    reviews: 15,
-    tags: ["AWS", "Linux", "Networking"],
-    posted: "ใหม่",
-    logo: "C"
-  }
-];
+import { internships } from "@/data/internships";
 
 export default function InternshipsPage() {
   return (
