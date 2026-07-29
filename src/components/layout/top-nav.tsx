@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 
-const navItems = [
+const studentNavItems = [
   { name: "แดชบอร์ด", href: "/dashboard" },
   { name: "ประเมินทักษะ", href: "/assessment" },
   { name: "สำรวจสายอาชีพ", href: "/explorer" },
@@ -16,13 +16,23 @@ const navItems = [
   { name: "โปรไฟล์", href: "/profile" },
 ];
 
+const clientNavItems = [
+  { name: "ภาพรวมบริษัท", href: "/client/dashboard" },
+  { name: "ค้นหานิสิต", href: "/client/talents" },
+  { name: "โปรไฟล์บริษัท & ตำแหน่งงาน", href: "/client/company" },
+  { name: "แพ็กเกจ & เครดิต", href: "/client/pricing" },
+];
+
 export function TopNav() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const isClientPortal = pathname.startsWith("/client");
+  const navItems = isClientPortal ? clientNavItems : studentNavItems;
+
   return (
     <div className="w-full flex justify-center sticky top-6 z-50 px-4">
-      <motion.nav 
+      <motion.nav
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -34,14 +44,14 @@ export function TopNav() {
               KU Career Center
             </Link>
           </div>
-          
+
           <div className="hidden lg:flex items-center gap-8 text-base font-medium text-slate-500">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link 
+                <Link
                   key={item.href}
-                  href={item.href} 
+                  href={item.href}
                   className={cn(
                     "transition-colors",
                     isActive ? "text-green-600 font-bold" : "hover:text-green-600"
@@ -54,15 +64,23 @@ export function TopNav() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden lg:block">
-              <Link href="/profile" className="rounded-full w-10 h-10 overflow-hidden border-2 border-slate-200 cursor-pointer hover:border-green-500 transition-colors block">
-                <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full object-cover" />
-              </Link>
-            </div>
-            
+            {!isClientPortal ? (
+              <div className="hidden lg:block">
+                <Link href="/profile" className="rounded-full w-10 h-10 overflow-hidden border-2 border-slate-200 cursor-pointer hover:border-green-500 transition-colors block">
+                  <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full object-cover" />
+                </Link>
+              </div>
+            ) : (
+              <div className="hidden lg:block">
+                <Link href="/client/company" className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-sm hover:bg-slate-800 transition-colors cursor-pointer" title="โปรไฟล์บริษัท Tech Innovation Co.">
+                  TECH
+                </Link>
+              </div>
+            )}
+
             {/* Mobile menu button */}
-            <button 
-              className="lg:hidden p-2 text-slate-600"
+            <button
+              className="lg:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -82,9 +100,9 @@ export function TopNav() {
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link 
+                  <Link
                     key={item.href}
-                    href={item.href} 
+                    href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
                       "transition-colors px-2 py-1",
@@ -96,16 +114,29 @@ export function TopNav() {
                 );
               })}
               <div className="px-2 py-2 border-t border-slate-100 mt-2">
-                <Link 
-                  href="/profile" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 text-slate-600 font-medium hover:text-green-600 transition-colors"
-                >
-                  <div className="rounded-full w-8 h-8 overflow-hidden border border-slate-200">
-                    <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full object-cover" />
-                  </div>
-                  โปรไฟล์ของฉัน
-                </Link>
+                {!isClientPortal ? (
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 text-slate-600 font-medium hover:text-green-600 transition-colors"
+                  >
+                    <div className="rounded-full w-8 h-8 overflow-hidden border border-slate-200">
+                      <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full object-cover" />
+                    </div>
+                    โปรไฟล์ของฉัน
+                  </Link>
+                ) : (
+                  <Link
+                    href="/client/company"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 text-xs font-semibold text-slate-700"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">
+                      TECH
+                    </div>
+                    โปรไฟล์บริษัท Tech Innovation Co.
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}
