@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { TopNav } from "@/components/layout/top-nav";
-import { Building2, User } from "lucide-react";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -43,17 +42,15 @@ export default function LandingPage() {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center">
             <button
               onClick={handleStudentLogin}
-              className="px-8 py-3.5 bg-[#1a202c] text-white rounded-full font-medium shadow-md hover:bg-black transition-all flex items-center gap-2 text-sm"
+              className="px-8 py-3.5 bg-[#1a202c] text-white rounded-full font-medium shadow-md hover:bg-black transition-all text-sm"
             >
-              <User className="w-4 h-4 text-green-400" />
               เข้าสู่ระบบด้วย KU SSO (สำหรับนิสิต)
             </button>
 
             <button
               onClick={handleClientPortal}
-              className="px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-slate-900 text-white rounded-full font-bold shadow-md hover:from-indigo-700 hover:to-black transition-all flex items-center gap-2 text-sm border border-indigo-400/30"
+              className="px-8 py-3.5 bg-green-600 text-white rounded-full font-bold shadow-md hover:bg-green-700 transition-all text-sm"
             >
-              <Building2 className="w-4 h-4 text-indigo-300" />
               สำหรับสถานประกอบการ (Client Portal)
             </button>
           </div>
