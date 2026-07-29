@@ -6,8 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Search, MapPin, Building, Star, Clock, Briefcase, Banknote, CheckCircle2, ChevronRight, Filter } from "lucide-react";
+import { Search, MapPin, Building, Star, Clock, Briefcase, Banknote, CheckCircle2, ChevronRight, Filter, MessageSquare, ThumbsUp, GraduationCap } from "lucide-react";
 import { internships, Internship } from "@/data/internships";
+import { CompanyLogo } from "@/components/ui/company-logo";
+import { cn } from "@/lib/utils";
 
 export default function InternshipsPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +17,7 @@ export default function InternshipsPage() {
   const [selectedWorkplaceFilter, setSelectedWorkplaceFilter] = useState("ทั้งหมด");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("ทั้งหมด");
   const [selectedJobDetail, setSelectedJobDetail] = useState<Internship | null>(null);
+  const [activeTab, setActiveTab] = useState<"detail" | "reviews">("detail");
   const [appliedJobId, setAppliedJobId] = useState<number | null>(null);
 
   const categories = [
@@ -53,6 +56,11 @@ export default function InternshipsPage() {
     }, 2000);
   };
 
+  const handleOpenDetail = (job: Internship, tab: "detail" | "reviews" = "detail") => {
+    setSelectedJobDetail(job);
+    setActiveTab(tab);
+  };
+
   return (
     <div className="flex flex-col gap-6 max-w-6xl mx-auto pb-16">
       {/* Header */}
@@ -62,7 +70,7 @@ export default function InternshipsPage() {
             ค้นหาที่ฝึกงานและสหกิจศึกษา
           </h1>
           <p className="text-slate-500 mt-1 text-sm">
-            โอกาสปฏิบัติงานจริงกับบริษัทเทคโนโลยีและอุตสาหกรรมชั้นนำ รับรองโดยคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเกษตรศาสตร์
+            โอกาสปฏิบัติงานจริงกับบริษัทชั้นนำ พร้อมอ่านรีวิวตรงจากรุ่นพี่นิสิตคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเกษตรศาสตร์
           </p>
         </div>
 
@@ -169,17 +177,17 @@ export default function InternshipsPage() {
               <Card
                 key={job.id}
                 className="shadow-sm border border-slate-200 hover:border-green-400 hover:shadow-md transition-all cursor-pointer group bg-white rounded-xl overflow-hidden"
-                onClick={() => setSelectedJobDetail(job)}
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col sm:flex-row gap-5">
-                    <div className="w-12 h-12 bg-slate-900 rounded-lg flex items-center justify-center text-white text-xs font-extrabold shrink-0 border border-slate-800 group-hover:bg-green-600 transition-colors">
-                      {job.logo}
+                    {/* SVG Vector Company Logo */}
+                    <div onClick={() => handleOpenDetail(job, "detail")}>
+                      <CompanyLogo logoKey={job.logo} className="group-hover:scale-105 transition-transform" />
                     </div>
 
                     <div className="flex-1">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-1.5">
-                        <div>
+                        <div onClick={() => handleOpenDetail(job, "detail")}>
                           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">
                             {job.category}
                           </span>
@@ -189,11 +197,19 @@ export default function InternshipsPage() {
                           <div className="flex items-center gap-2 text-xs text-slate-600 mt-1 font-medium">
                             <Building className="w-3.5 h-3.5 text-slate-400" />
                             <span>{job.company}</span>
-                            <span className="flex items-center gap-1 ml-2 text-amber-500">
-                              <Star className="w-3.5 h-3.5 fill-amber-500" />
-                              <span className="font-bold text-slate-800">{job.rating}</span>
-                              <span className="text-slate-400">({job.reviews} รีวิว)</span>
-                            </span>
+
+                            {/* Clickable Rating Badge */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenDetail(job, "reviews");
+                              }}
+                              className="flex items-center gap-1 ml-2 bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5 rounded-full hover:bg-amber-100 transition-colors"
+                            >
+                              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                              <span className="font-bold text-slate-800 text-xs">{job.rating}</span>
+                              <span className="text-slate-600 text-[11px]">({job.studentReviews ? job.studentReviews.length : job.reviews} รีวิวรุ่นพี่)</span>
+                            </button>
                           </div>
                         </div>
 
@@ -206,7 +222,10 @@ export default function InternshipsPage() {
                       </div>
 
                       {/* Location, Workplace & Stipend */}
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-3 mb-4 font-medium">
+                      <div
+                        onClick={() => handleOpenDetail(job, "detail")}
+                        className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-3 mb-4 font-medium"
+                      >
                         <div className="flex items-center gap-1.5">
                           <MapPin className="w-3.5 h-3.5 text-slate-400" />
                           {job.location} ({job.workplaceType})
@@ -231,9 +250,21 @@ export default function InternshipsPage() {
                           ))}
                         </div>
 
-                        <span className="text-xs font-semibold text-green-600 flex items-center group-hover:translate-x-0.5 transition-transform">
-                          ดูรายละเอียดเพิ่มเติม <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => handleOpenDetail(job, "reviews")}
+                            className="text-xs font-semibold text-slate-600 hover:text-green-600 flex items-center gap-1"
+                          >
+                            <MessageSquare className="w-3.5 h-3.5 text-slate-400" />
+                            อ่านรีวิวรุ่นพี่ ({job.studentReviews ? job.studentReviews.length : 0})
+                          </button>
+                          <span
+                            onClick={() => handleOpenDetail(job, "detail")}
+                            className="text-xs font-semibold text-green-600 flex items-center group-hover:translate-x-0.5 transition-transform"
+                          >
+                            ดูรายละเอียด <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -244,24 +275,23 @@ export default function InternshipsPage() {
         </div>
       </div>
 
-      {/* Job Detail Modal */}
+      {/* Clean Enterprise Job Detail & Reviews Modal */}
       <Dialog open={!!selectedJobDetail} onOpenChange={(open) => !open && setSelectedJobDetail(null)}>
         {selectedJobDetail && (
-          <DialogContent className="sm:max-w-2xl bg-white rounded-xl border border-slate-200 shadow-xl p-0 overflow-hidden">
-            <div className="bg-slate-900 text-white p-6">
+          <DialogContent className="sm:max-w-2xl bg-white rounded-2xl border border-slate-200 shadow-2xl p-0 overflow-hidden z-[60]">
+            {/* Modal Header */}
+            <div className="bg-white p-6 border-b border-slate-100">
               <div className="flex justify-between items-start gap-4">
                 <div className="flex gap-4 items-center">
-                  <div className="w-12 h-12 bg-white text-slate-900 rounded-lg flex items-center justify-center font-extrabold text-sm shrink-0">
-                    {selectedJobDetail.logo}
-                  </div>
+                  <CompanyLogo logoKey={selectedJobDetail.logo} />
                   <div>
-                    <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider block mb-0.5">
+                    <span className="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-0.5">
                       {selectedJobDetail.category}
                     </span>
-                    <DialogTitle className="text-lg font-bold text-white leading-snug">
+                    <DialogTitle className="text-lg font-extrabold text-slate-900 leading-snug">
                       {selectedJobDetail.title}
                     </DialogTitle>
-                    <span className="text-xs text-slate-300 font-medium block mt-1">
+                    <span className="text-xs text-slate-500 font-medium block mt-0.5">
                       {selectedJobDetail.company} • {selectedJobDetail.location}
                     </span>
                   </div>
@@ -271,67 +301,153 @@ export default function InternshipsPage() {
                   {selectedJobDetail.type}
                 </Badge>
               </div>
+
+              {/* Navigation Tabs */}
+              <div className="flex gap-6 mt-6 border-b border-slate-200 text-xs font-bold">
+                <button
+                  onClick={() => setActiveTab("detail")}
+                  className={`pb-2.5 border-b-2 transition-colors flex items-center gap-1.5 ${
+                    activeTab === "detail"
+                      ? "border-green-600 text-green-600 font-bold"
+                      : "border-transparent text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  <Briefcase className="w-3.5 h-3.5" /> รายละเอียดตำแหน่งงาน
+                </button>
+                <button
+                  onClick={() => setActiveTab("reviews")}
+                  className={`pb-2.5 border-b-2 transition-colors flex items-center gap-1.5 ${
+                    activeTab === "reviews"
+                      ? "border-green-600 text-green-600 font-bold"
+                      : "border-transparent text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  <GraduationCap className="w-3.5 h-3.5" /> รีวิวจากรุ่นพี่นิสิต KU ({selectedJobDetail.studentReviews ? selectedJobDetail.studentReviews.length : 0})
+                </button>
+              </div>
             </div>
 
-            <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
-              {/* Stipend Banner */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-slate-400 font-semibold block">ค่าเบี้ยเลี้ยง / ค่าตอบแทน</span>
-                  <span className="text-base font-bold text-slate-900">{selectedJobDetail.stipend}</span>
-                </div>
-                <Badge variant="outline" className="bg-white text-slate-700 text-xs border-slate-200">
-                  รูปแบบการทำงาน: {selectedJobDetail.workplaceType}
-                </Badge>
-              </div>
-
-              {/* Description */}
-              <div>
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">รายละเอียดตำแหน่งงาน</h4>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  {selectedJobDetail.description}
-                </p>
-              </div>
-
-              {/* Responsibilities */}
-              <div>
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">ขอบเขตความรับผิดชอบหลัก</h4>
-                <ul className="space-y-1.5 text-xs text-slate-700">
-                  {selectedJobDetail.responsibilities.map((resp, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-green-600 font-bold">•</span>
-                      <span>{resp}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Qualifications */}
-              <div>
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">คุณสมบัติผู้สมัคร</h4>
-                <ul className="space-y-1.5 text-xs text-slate-700">
-                  {selectedJobDetail.qualifications.map((qual, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-slate-400 font-bold">•</span>
-                      <span>{qual}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Skill Tags */}
-              <div>
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">ทักษะที่ใช้ในงาน</h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedJobDetail.tags.map((tag) => (
-                    <Badge key={tag} variant="outline" className="bg-slate-50 text-slate-800 text-xs px-2.5 py-1 font-semibold border-slate-200">
-                      {tag}
+            {/* Modal Body Content */}
+            <div className="p-6 space-y-5 max-h-[60vh] overflow-y-auto">
+              {activeTab === "detail" ? (
+                <>
+                  {/* Stipend Banner */}
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                    <div>
+                      <span className="text-xs text-slate-400 font-semibold block">ค่าเบี้ยเลี้ยง / ค่าตอบแทน</span>
+                      <span className="text-base font-bold text-slate-900">{selectedJobDetail.stipend}</span>
+                    </div>
+                    <Badge variant="outline" className="bg-white text-slate-700 text-xs border-slate-200">
+                      รูปแบบการทำงาน: {selectedJobDetail.workplaceType}
                     </Badge>
-                  ))}
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">รายละเอียดตำแหน่งงาน</h4>
+                    <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                      {selectedJobDetail.description}
+                    </p>
+                  </div>
+
+                  {/* Responsibilities */}
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">ขอบเขตความรับผิดชอบหลัก</h4>
+                    <ul className="space-y-1.5 text-xs text-slate-700">
+                      {selectedJobDetail.responsibilities.map((resp, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-green-600 font-bold">•</span>
+                          <span>{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Qualifications */}
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">คุณสมบัติผู้สมัคร</h4>
+                    <ul className="space-y-1.5 text-xs text-slate-700">
+                      {selectedJobDetail.qualifications.map((qual, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-slate-400 font-bold">•</span>
+                          <span>{qual}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Skill Tags */}
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">ทักษะที่ใช้ในงาน</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedJobDetail.tags.map((tag) => (
+                        <Badge key={tag} variant="outline" className="bg-slate-50 text-slate-800 text-xs px-2.5 py-1 font-semibold border-slate-200">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                /* REVIEWS TAB */
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-medium">
+                    <div className="flex items-center gap-2">
+                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                      <span>คะแนนรีวิวเฉลี่ย: <strong className="text-slate-900 font-extrabold text-sm">{selectedJobDetail.rating} / 5.0</strong></span>
+                    </div>
+                    <span className="text-slate-500">จากรุ่นพี่นิสิตวิศวกรรมศาสตร์ KU</span>
+                  </div>
+
+                  {selectedJobDetail.studentReviews && selectedJobDetail.studentReviews.length > 0 ? (
+                    selectedJobDetail.studentReviews.map((rev) => (
+                      <div key={rev.id} className="p-4 rounded-xl border border-slate-200 bg-white space-y-3 shadow-xs">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-bold text-sm text-slate-900">{rev.author}</h4>
+                              <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-700 border-slate-200 font-semibold">
+                                {rev.major}
+                              </Badge>
+                            </div>
+                            <span className="text-xs text-slate-400 block mt-0.5">
+                              {rev.batch} • รีวิวเมื่อ {rev.date}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1 text-amber-500 font-bold text-xs bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                            <Star className="w-3.5 h-3.5 fill-amber-500" />
+                            <span>{rev.rating}.0</span>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                          "{rev.comment}"
+                        </p>
+
+                        <div className="space-y-1.5 pt-2 border-t border-slate-100 text-xs">
+                          <div className="flex items-start gap-1.5 text-slate-800">
+                            <span className="font-bold text-green-600 shrink-0">👍 จุดเด่น:</span>
+                            <span className="text-slate-600">{rev.pros}</span>
+                          </div>
+
+                          <div className="flex items-start gap-1.5 text-slate-800">
+                            <span className="font-bold text-amber-600 shrink-0">💡 ข้อควรเตรียมใจ:</span>
+                            <span className="text-slate-600">{rev.cons}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500">
+                      ยังไม่มีรีวิวจากรุ่นพี่สำหรับตำแหน่งนี้
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
             </div>
 
+            {/* Modal Footer */}
             <DialogFooter className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center">
               <Button variant="outline" size="sm" onClick={() => setSelectedJobDetail(null)} className="text-xs">
                 ปิดหน้าต่าง

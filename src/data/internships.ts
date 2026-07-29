@@ -1,3 +1,15 @@
+export type StudentReview = {
+  id: string;
+  author: string;
+  major: string;
+  batch: string;
+  rating: number;
+  date: string;
+  comment: string;
+  pros: string;
+  cons: string;
+};
+
 export type Internship = {
   id: number;
   title: string;
@@ -12,10 +24,12 @@ export type Internship = {
   tags: string[];
   posted: string;
   logo: string;
+  logoBg: string;
   matchTags: string[];
   description: string;
   responsibilities: string[];
   qualifications: string[];
+  studentReviews: StudentReview[];
 };
 
 export const internships: Internship[] = [
@@ -34,6 +48,7 @@ export const internships: Internship[] = [
     tags: ["Java", "C#", "Scala", "Kubernetes", "Microservices"],
     posted: "ใหม่",
     logo: "AG",
+    logoBg: "bg-gradient-to-br from-sky-500 to-indigo-600",
     matchTags: ["software", "code", "backend", "web"],
     description: "ร่วมพัฒนาและดูแลรักษาระบบค้นหาห้องพักและตั๋วเครื่องบินที่มีผู้ใช้งานนับล้านคนทั่วโลก ร่วมกับวิศวกรระดับโลกในสถาปัตยกรรม High-Scale Microservices",
     responsibilities: [
@@ -45,6 +60,30 @@ export const internships: Internship[] = [
       "นิสิตชั้นปีที่ 3 หรือ 4 สาขาวิชาวิศวกรรมคอมพิวเตอร์ หรือสาขาที่เกี่ยวข้อง",
       "เข้าใจพื้นฐาน Data Structures, Algorithms และ Object-Oriented Programming",
       "มีความสามารถในการสื่อสารภาษาอังกฤษในระดับดี"
+    ],
+    studentReviews: [
+      {
+        id: "rev-1-1",
+        author: "พี่ธนกฤต (รุ่นพี่ KU E78)",
+        major: "วิศวกรรมคอมพิวเตอร์",
+        batch: "ฝึกงานปี 2025",
+        rating: 5,
+        date: "มีนาคม 2025",
+        comment: "ประสบการณ์การทำงานระดับสากลที่ดีมากๆ ได้ลงโค้ด Production จริงที่กระทบคนใช้งานเป็นล้านคน พี่ๆ Mentor คอยช่วยเหลือ ให้คำแนะนำ Code Review สไตล์ Tech Company แท้ๆ",
+        pros: "สวัสดิการดีมาก มีเบี้ยเลี้ยงสูง อาหารและขนมฟรี บรรยากาศนานาชาติใช้ภาษาอังกฤษตลอด",
+        cons: "ความดันการทำงานค่อนข้างสูง โค้ดในระบบมีความซับซ้อนมาก ต้องเรียนรู้เร็วมากๆ"
+      },
+      {
+        id: "rev-1-2",
+        author: "พี่ณัฐนิชา (รุ่นพี่ KU E79)",
+        major: "วิศวกรรมคอมพิวเตอร์",
+        batch: "ฝึกงานปี 2025",
+        rating: 4.5,
+        date: "พฤษภาคม 2025",
+        comment: "ได้เรียนรู้เรื่องระบบ Microservices และ CI/CD แบบลึกซึ้ง พี่ๆ ให้เกียรตินิสิตฝึกงานเหมือนเป็นวิศวกรจริงในทีม มีโอกาสได้เสนอฟีเจอร์และ push โค้ดขึ้นระบบจริง",
+        pros: "ทีมงานเก่งมาก ได้คอนเนกชันวิศวกรระดับท็อปจากหลายประเทศ",
+        cons: "เวลางานยืดหยุ่นแต่อาจจะมีประชุมกับทีมต่างประเทศช่วงค่ำบางวัน"
+      }
     ]
   },
   {
@@ -61,6 +100,7 @@ export const internships: Internship[] = [
     tags: ["React", "Next.js", "Go", "PostgreSQL", "Tailwind"],
     posted: "2 วันที่แล้ว",
     logo: "LMW",
+    logoBg: "bg-gradient-to-br from-emerald-500 to-green-600",
     matchTags: ["software", "code", "frontend", "backend", "web"],
     description: "สร้างและพัฒนาเว็บแอปพลิเคชันสำหรับแพลตฟอร์มฟู้ดดิลิเวอรีและบริการไลฟ์สไตล์อันดับหนึ่งของไทย มุ่งเน้นการมอบประสบการณ์การใช้งานที่รวดเร็วและราบรื่น",
     responsibilities: [
@@ -72,6 +112,19 @@ export const internships: Internship[] = [
       "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิศวกรรมคอมพิวเตอร์ หรือวิทยาการคอมพิวเตอร์",
       "เคยทำโครงงานพัฒนาเว็บแอปพลิเคชันด้วย React หรือ Node.js",
       "มีทักษะการทำงานเป็นทีมและกล้าเรียนรู้เทคโนโลยีใหม่ๆ"
+    ],
+    studentReviews: [
+      {
+        id: "rev-2-1",
+        author: "พี่ภูมิพัฒน์ (รุ่นพี่ KU E77)",
+        major: "วิศวกรรมคอมพิวเตอร์",
+        batch: "สหกิจศึกษาปี 2024",
+        rating: 5,
+        date: "ธันวาคม 2024",
+        comment: "บรรยากาศออฟฟิศชิลมาก วัฒนธรรมเป็นกันเอง ไร้ลำดับชั้นระบบราชการ ได้ใช้ Tech Stack สมัยใหม่ (Go, React, Next.js) ที่ตลาดต้องการสูง หลังจบสหกิจได้รับการทาบทามต่อเป็น Full-time ทันที",
+        pros: "อาหารฟรี คูปองส่วนลดสั่งอาหาร LINE MAN ออฟฟิศติด BTS สองห่าง",
+        cons: "งานท้าทายและสปีดการส่งมอบโปรดักต์เร็วมาก ต้องรับมือกับการเปลี่ยนแปลงความต้องการบ่อย"
+      }
     ]
   },
   {
@@ -88,6 +141,7 @@ export const internships: Internship[] = [
     tags: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"],
     posted: "ใหม่",
     logo: "KBTG",
+    logoBg: "bg-gradient-to-br from-emerald-600 to-teal-900",
     matchTags: ["cloud", "infrastructure", "network", "devops"],
     description: "ดูแลและบริหารจัดการโครงสร้างพื้นฐานคลาวด์ของแอปพลิเคชันการเงินอันดับหนึ่ง Make by KBank และ MAKE API รองรับทราฟฟิกธุรกรรมการเงินระดับล้านรายการต่อวัน",
     responsibilities: [
@@ -99,6 +153,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมคอมพิวเตอร์ หรือวิศวกรรมโทรคมนาคม/เครือข่าย",
       "เข้าใจหลักการทำงานของระบบปฏิบัติการ Linux, คำสั่ง Bash และคำสั่งการเครือข่าย",
       "สนใจเรื่องระบบคลาวด์และ Containerization"
+    ],
+    studentReviews: [
+      {
+        id: "rev-3-1",
+        author: "พี่ชยธร (รุ่นพี่ KU E78)",
+        major: "วิศวกรรมคอมพิวเตอร์",
+        batch: "สหกิจศึกษาปี 2025",
+        rating: 5,
+        date: "กุมภาพันธ์ 2025",
+        comment: "KBTG เป็นสถานที่เรียนรู้เรื่อง Financial Cloud Infrastructure ที่ดีที่สุดแห่งหนึ่งในไทย ได้จับ Kubernetes ของจริง และเรียนรู้เรื่อง Security Compliance ระดับธนาคาร",
+        pros: "พี่ๆ Mentor ใจดีมาก มีโครงการอบรมเพิ่มทักษะคลาวด์ให้ฟรีก่อนเริ่มงาน",
+        cons: "ความเข้มงวดเรื่องการเข้าถึงข้อมูลและสิทธิ์รหัสค่อนข้างสูงตามกฎระเบียบธนาคาร"
+      }
     ]
   },
   {
@@ -115,6 +182,7 @@ export const internships: Internship[] = [
     tags: ["SQL", "Python", "Tableau", "Data Pipelines", "A/B Testing"],
     posted: "3 วันที่แล้ว",
     logo: "SP",
+    logoBg: "bg-gradient-to-br from-orange-500 to-red-600",
     matchTags: ["data", "analysis", "database", "python"],
     description: "วิเคราะห์พฤติกรรมการซื้อสินค้าของผู้ใช้งานและประสิทธิภาพแคมเปญการตลาดของแพลตฟอร์มอีคอมเมิร์ซ เพื่อสรุปข้อมูลและทำข้อเสนอแนะเชิงกลยุทธ์แก่ผู้บริหาร",
     responsibilities: [
@@ -126,6 +194,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมคอมพิวเตอร์, วิศวกรรมอุตสาหการ หรือสถิติประยุกต์",
       "เชี่ยวชาญการใช้ภาษา SQL และการวิเคราะห์ข้อมูลด้วย Python (Pandas/NumPy)",
       "มีทักษะการคิดวิเคราะห์เชิงตรรกะและการนำเสนอข้อมูลเชิงภาพ"
+    ],
+    studentReviews: [
+      {
+        id: "rev-4-1",
+        author: "พี่กนกวรรณ (รุ่นพี่ KU E79)",
+        major: "วิศวกรรมอุตสาหการ",
+        batch: "ฝึกงานปี 2025",
+        rating: 4.5,
+        date: "มิถุนายน 2025",
+        comment: "ได้ฝึกเขียน Complex SQL Query กับข้อมูลขนาดมหาศาล สภาพแวดล้อมการทำงานมีความลีนและตัดสินใจบนข้อมูลData-driven แท้จริง",
+        pros: "สวัสดิการอาหาร ขนม ชานมฟรี ออฟฟิศเดินทางสะดวกติด MRT สุขุมวิท",
+        cons: "ช่วงแคมเปญใหญ่ (11.11 / 12.12) งานจะค่อนข้างหนาแน่น"
+      }
     ]
   },
   {
@@ -142,6 +223,7 @@ export const internships: Internship[] = [
     tags: ["PyTorch", "LLM", "RAG", "Python", "Computer Vision"],
     posted: "ใหม่",
     logo: "SCB",
+    logoBg: "bg-gradient-to-br from-purple-700 to-indigo-900",
     matchTags: ["software", "data", "ai", "machine learning", "research"],
     description: "ร่วมทีมวิจัยและพัฒนาโมเดลภาษาขนาดใหญ่ (LLM) ภาษาไทย และระบบสกัดสารสนเทศเอกสารการเงินอัตโนมัติด้วยเทคโนโลยี Generative AI ล่าสุด",
     responsibilities: [
@@ -153,6 +235,19 @@ export const internships: Internship[] = [
       "นิสิตระดับปริญญาตรี หรือโท สาขาวิชาวิศวกรรมคอมพิวเตอร์ หรือวิทยาการข้อมูล",
       "มีประสบการณ์เขียนโปรแกรมภาษา Python และใช้งาน PyTorch หรือ TensorFlow",
       "เข้าใจทฤษฎี Deep Learning และกระดาษงานวิจัยวิชาการ"
+    ],
+    studentReviews: [
+      {
+        id: "rev-5-1",
+        author: "พี่ปรเมศวร์ (รุ่นพี่ KU E78)",
+        major: "วิศวกรรมคอมพิวเตอร์",
+        batch: "ฝึกงานปี 2025",
+        rating: 5,
+        date: "กรกฎาคม 2025",
+        comment: "ทีม AI งานล้ำมากๆ ได้ลองเล่นกับ GPU Cluster เครื่องแรงๆ และได้ตีพิมพ์งานวิจัยย่อยร่วมกับทีม PhD ในองค์กร เหมาะกับคนที่ชอบความเจาะลึกทางทฤษฎี AI",
+        pros: "ค่าตอบแทนสูงมาก งบประมาณวิจัยและเครื่องมือคอมพิวเตอร์ไม่จำกัด",
+        cons: "ความรู้พื้นฐานคณิตศาสตร์และสมการ Deep Learning ต้องแน่นมาก"
+      }
     ]
   },
 
@@ -171,6 +266,7 @@ export const internships: Internship[] = [
     tags: ["Power Grid", "Substation", "ETAP", "High Voltage", "Renewable Energy"],
     posted: "4 วันที่แล้ว",
     logo: "GED",
+    logoBg: "bg-gradient-to-br from-blue-600 to-cyan-700",
     matchTags: ["electrical", "power", "hardware", "field"],
     description: "เรียนรู้และสนับสนุนวิศวกรไฟฟ้าในการออกแบบ และควบคุมการจ่ายไฟของสถานีไฟฟ้าแรงสูง ตลอดจนโครงการโซลาร์ฟาร์มและโรงไฟฟ้าก๊าซธรรมชาติ",
     responsibilities: [
@@ -182,6 +278,19 @@ export const internships: Internship[] = [
       "นิสิตชั้นปีที่ 3 หรือ 4 สาขาวิชาวิศวกรรมไฟฟ้ากำลัง",
       "เข้าใจหลักการทำงานของระบบไฟฟ้ากำลัง สวิตช์เกียร์ และรีเลย์ป้องกัน",
       "สามารถเดินทางไปปฏิบัติงานฝึกงานในพื้นที่นิคมอุตสาหกรรม จ.ระยอง ได้"
+    ],
+    studentReviews: [
+      {
+        id: "rev-6-1",
+        author: "พี่ศิวัช (รุ่นพี่ KU E77)",
+        major: "วิศวกรรมไฟฟ้า",
+        batch: "สหกิจศึกษาปี 2024",
+        rating: 4.5,
+        date: "พฤศจิกายน 2024",
+        comment: "ได้ลงพื้นที่โรงไฟฟ้าจริง สัมผัสอุปกรณ์แรงสูงขนาดใหญ่ ได้ความรู้ด้าน Power System หนักแน่นมาก พี่ๆ วิศวกรดูแลความปลอดภัยและสอนงานใกล้ชิด",
+        pros: "มีเบี้ยเลี้ยงสนาม รถรับส่ง และที่พักโครงการสวัสดิการดี",
+        cons: "ต้องเดินทางต่างจังหวัดและทำงานกลางแจ้งในพื้นที่โรงไฟฟ้าบ้าง"
+      }
     ]
   },
   {
@@ -198,6 +307,7 @@ export const internships: Internship[] = [
     tags: ["C/C++", "ARM Cortex", "STM32", "PCB Layout", "FreeRTOS"],
     posted: "5 วันที่แล้ว",
     logo: "BM",
+    logoBg: "bg-gradient-to-br from-slate-700 to-blue-900",
     matchTags: ["embedded", "electrical", "hardware", "robotics"],
     description: "ออกแบบและเขียนเฟิร์มแวร์ภาษา C/C++ สำหรับบอร์ดไมโครคอนโทรลเลอร์ประมวลผลอุปกรณ์การแพทย์และชิ้นส่วนอิเล็กทรอนิกส์ยานยนต์",
     responsibilities: [
@@ -209,6 +319,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมไฟฟ้า, อิเล็กทรอนิกส์ หรือวิศวกรรมคอมพิวเตอร์",
       "เชี่ยวชาญการเขียนโปรแกรมภาษา C/C++ สำหรับอุปกรณ์ embedded",
       "อ่านแบบวงจรอิเล็กทรอนิกส์ Schematic และใช้อุปกรณ์วัดไฟฟ้าได้"
+    ],
+    studentReviews: [
+      {
+        id: "rev-7-1",
+        author: "พี่ภาสกร (รุ่นพี่ KU E78)",
+        major: "วิศวกรรมไฟฟ้า",
+        batch: "ฝึกงานปี 2025",
+        rating: 4.5,
+        date: "เมษายน 2025",
+        comment: "ได้ต่อบอร์ดและสโคปสัญญาณจริง งานท้าทายมาก ได้ฝึกแก้ปัญหา Hardware-Software Co-design เต็มรูปแบบ",
+        pros: "อุปกรณ์แล็บทันสมัยมาก พี่ๆ สอนเทคนิคการไล่สัญญาณไฟฟ้าเก่งมาก",
+        cons: "โรงงานอยู่นิคมอมตะซิตี้ ชลบุรี เหมาะกับคนมีรถส่วนตัวหรือพักใกล้"
+      }
     ]
   },
 
@@ -227,6 +350,7 @@ export const internships: Internship[] = [
     tags: ["EV Battery", "BMS", "MATLAB/Simulink", "CAN Bus", "Thermal Mgt"],
     posted: "ใหม่",
     logo: "TMT",
+    logoBg: "bg-gradient-to-br from-red-600 to-slate-900",
     matchTags: ["automotive", "electrical", "hardware", "mechanical"],
     description: "ศึกษาและร่วมทำวิจัยพัฒนาระบบควบคุมแบตเตอรี่รถยนต์ไฟฟ้า (BMS) และการจัดการความร้อนในแพ็กแบตเตอรี่ตระกูลรถยนต์ลูกครึ่งและไฟฟ้าล้วน",
     responsibilities: [
@@ -238,6 +362,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมเครื่องกล, วิศวกรรมยานยนต์ หรือวิศวกรรมไฟฟ้า",
       "มีความรู้พื้นฐานเกี่ยวกับระบบยานยนต์ไฟฟ้า และอิเล็กทรอนิกส์กำลัง",
       "สามารถใช้งานโปรแกรม MATLAB/Simulink หรือ SolidWorks ได้"
+    ],
+    studentReviews: [
+      {
+        id: "rev-8-1",
+        author: "พี่ธนินทร์ (รุ่นพี่ KU E77)",
+        major: "วิศวกรรมยานยนต์",
+        batch: "สหกิจศึกษาปี 2024",
+        rating: 5,
+        date: "ตุลาคม 2024",
+        comment: "แบรนด์ยานยนต์ระดับโลก มาตรฐานการทำงานสูงมาก TPS System ได้ความรู้เรื่องการทดสอบรถยนต์ไฟฟ้า EV ของจริง มีโอกาสได้บรรจุเป็นวิศวกรประจำต่อสูง",
+        pros: "สวัสดิการค่าตอบแทนดี มีรถรับส่งทั่วกรุงเทพฯ และปริมณฑล",
+        cons: "กฎระเบียบความปลอดภัยเข้มงวดและเอกสารขั้นตอนค่อนข้างเยอะ"
+      }
     ]
   },
   {
@@ -254,6 +391,7 @@ export const internships: Internship[] = [
     tags: ["ROS2", "PLC", "Python", "SolidWorks", "Inverse Kinematics"],
     posted: "3 วันที่แล้ว",
     logo: "KUKA",
+    logoBg: "bg-gradient-to-br from-amber-500 to-orange-600",
     matchTags: ["robotics", "automation", "hardware", "control"],
     description: "เขียนโปรแกรมควบคุมแขนกลหุ่นยนต์อุตสาหกรรมในสายการประกอบเครื่องจักร และพัฒนาระบบการเคลื่อนที่ของหุ่นยนต์หยิบจับชิ้นงานอัตโนมัติ",
     responsibilities: [
@@ -265,6 +403,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมหุ่นยนต์และสารสนเทศ, วิศวกรรมเมคคาทรอนิกส์ หรือวิศวกรรมเครื่องกล",
       "มีความเข้าใจในคณิตศาสตร์ Kinematics & Dynamics ของหุ่นยนต์",
       "เคยมีประสบการณ์ใช้งานซอฟต์แวร์จำลองหุ่นยนต์ หรือเขียนโค้ดภาษา C++/Python"
+    ],
+    studentReviews: [
+      {
+        id: "rev-9-1",
+        author: "พี่อัครพล (รุ่นพี่ KU E78)",
+        major: "วิศวกรรมหุ่นยนต์และสารสนเทศ",
+        batch: "ฝึกงานปี 2025",
+        rating: 4.8,
+        date: "มิถุนายน 2025",
+        comment: "สนุกลุยมาก ได้เขียนโปรแกรมควบคุมหุ่นยนต์แขนกลส้มของ KUKA ตัวละหลายล้าน พี่ๆ วิศวกรสอนการเขียนโปรแกรมควบคุมตำแหน่งละเอียดมาก",
+        pros: "ได้จับฮาร์ดแวร์หุ่นยนต์เยอรมนีของจริง ออฟฟิศหลักสี่เดินทางสะดวก",
+        cons: "ต้องมีพื้นฐานคณิตศาสตร์ Vector & Kinematics แข็งแกร่ง"
+      }
     ]
   },
 
@@ -283,6 +434,7 @@ export const internships: Internship[] = [
     tags: ["AutoCAD", "Revit BIM", "ETABS", "Structural Analysis", "Concrete"],
     posted: "1 สัปดาห์ที่แล้ว",
     logo: "CK",
+    logoBg: "bg-gradient-to-br from-blue-800 to-slate-900",
     matchTags: ["civil", "construction", "field", "structure"],
     description: "ร่วมทีมวิศวกรโยธาในการเขียนและถอดแบบอาคารโครงสร้างคอนกรีตอัดแรง และโครงสร้างเหล็กของอุโมงค์และรถไฟฟ้าสายสีต่างๆ ด้วยระบบ BIM 3D",
     responsibilities: [
@@ -294,6 +446,19 @@ export const internships: Internship[] = [
       "นิสิตชั้นปีที่ 3 หรือ 4 สาขาวิชาวิศวกรรมโยธา",
       "สามารถใช้งานโปรแกรม AutoCAD หรือ Autodesk Revit ได้ดี",
       "มีความตั้งใจ ลุยงาน และรับฟังคำแนะนำจากวิศวกรผู้ควบคุมงาน"
+    ],
+    studentReviews: [
+      {
+        id: "rev-10-1",
+        author: "พี่กิตติศักดิ์ (รุ่นพี่ KU E77)",
+        major: "วิศวกรรมโยธา",
+        batch: "สหกิจศึกษาปี 2024",
+        rating: 4.5,
+        date: "ธันวาคม 2024",
+        comment: "ได้เรียนรู้งานโยธาโครงสร้างพื้นฐานระดับประเทศ โครงสร้างอุโมงค์และรถไฟฟ้า ได้เห็นขั้นตอนการเทคอนกรีตและการถอดแบบ BIM หน้างานจริง",
+        pros: "ได้ประสบการณ์หน้างานแน่นมาก พี่ๆ วิศวกรสายลุยสอนงานให้เต็มที่",
+        cons: "ฝุ่นและความร้อนในพื้นที่ไซต์งานก่อสร้าง ต้องอดทนสูง"
+      }
     ]
   },
 
@@ -312,6 +477,7 @@ export const internships: Internship[] = [
     tags: ["Lean Six Sigma", "Line Balancing", "FlexSim", "WMS", "Process Improvement"],
     posted: "ใหม่",
     logo: "CP",
+    logoBg: "bg-gradient-to-br from-red-500 to-emerald-600",
     matchTags: ["industrial", "supply_chain", "quality", "logistics"],
     description: "วิเคราะห์และปรับปรุงกระบวนการจัดเก็บและคัดแยกสินค้าในคลังสินค้าอัตโนมัติ เพิ่มประสิทธิภาพรอบเวลา Takt Time และลดความสูญเสียในสายการคัดแยก",
     responsibilities: [
@@ -323,6 +489,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมอุตสาหการ หรือวิศวกรรมโลจิสติกส์",
       "เข้าใจทฤษฎีการวิจัยดำเนินงาน Operations Research และหลักการ Lean",
       "มีทักษะในการประสานงานและการเก็บข้อมูลสถิติหน้างาน"
+    ],
+    studentReviews: [
+      {
+        id: "rev-11-1",
+        author: "พี่ปิยวัฒน์ (รุ่นพี่ KU E78)",
+        major: "วิศวกรรมอุตสาหการ",
+        batch: "ฝึกงานปี 2025",
+        rating: 4.4,
+        date: "พฤษภาคม 2025",
+        comment: "ได้ประยุกต์ใช้ความรู้ IE ทั้ง Time Study, Line Balancing และ FlexSim กับคลังสินค้าจริงที่ส่งของทั่วไทย พี่ๆ ยินดีรับฟังไอเดีย Kaizen ของนิสิต",
+        pros: "เห็นภาพรวมการจัดการโลจิสติกส์ห่วงโซ่อุปทานระดับประเทศชัดเจน",
+        cons: "ศูนย์กระจายสินค้าอยู่บางบัวทอง ต้องคำนวณการเดินทาง"
+      }
     ]
   },
 
@@ -341,6 +520,7 @@ export const internships: Internship[] = [
     tags: ["Aspen HYSYS", "P&ID", "Mass Balance", "Thermodynamics", "HAZOP"],
     posted: "2 วันที่แล้ว",
     logo: "GC",
+    logoBg: "bg-gradient-to-br from-blue-600 to-teal-700",
     matchTags: ["chemical", "materials", "petroleum", "environmental"],
     description: "ศึกษาและทำความเข้าใจกระบวนการกลั่นน้ำมันและปิโตรเคมีในหอกลั่นจริง ร่วมประเมินประสิทธิภาพความร้อนของเครื่องแลกเปลี่ยนความร้อนและสมดุลมวลสาร",
     responsibilities: [
@@ -352,6 +532,19 @@ export const internships: Internship[] = [
       "นิสิตสาขาวิชาวิศวกรรมเคมี ชั้นปีที่ 3 หรือ 4",
       "มีความรู้แน่นในวิชา Thermodynamics, Fluid Mechanics และ Heat Transfer",
       "สามารถผ่านเกณฑ์การตรวจสุขภาพเพื่อปฏิบัติงานในพื้นที่อุตสาหกรรมได้"
+    ],
+    studentReviews: [
+      {
+        id: "rev-12-1",
+        author: "พี่วรปรัชญ์ (รุ่นพี่ KU E77)",
+        major: "วิศวกรรมเคมี",
+        batch: "สหกิจศึกษาปี 2024",
+        rating: 4.9,
+        date: "พฤศจิกายน 2024",
+        comment: "สุดยอดสถานที่ฝึกงานของวิศวกรเคมี ได้คำนวณ Aspen HYSYS กับโรงงานจริง และเดินดูระบบท่อในพื้นที่มาบตาพุด สวัสดิการและค่าตอบแทนดีที่สุดในอุตสาหกรรม",
+        pros: "เบี้ยเลี้ยงสูง มีหอพักและรถรับส่งพนักงาน อาหารสวัสดิการครบ",
+        cons: "ต้องผ่านการตรวจสุขภาพและปฏิบัติตามกฎความปลอดภัยเข้มงวด"
+      }
     ]
   }
 ];
