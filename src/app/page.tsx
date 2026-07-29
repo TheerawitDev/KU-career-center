@@ -44,14 +44,14 @@ export default function LandingPage() {
               onClick={handleStudentLogin}
               className="px-8 py-3.5 bg-[#1a202c] text-white rounded-full font-medium shadow-md hover:bg-black transition-all text-sm"
             >
-              เข้าสู่ระบบด้วย KU SSO (สำหรับนิสิต)
+              เข้าสู่ระบบด้วย KU SSO
             </button>
 
             <button
               onClick={handleClientPortal}
               className="px-8 py-3.5 bg-green-600 text-white rounded-full font-bold shadow-md hover:bg-green-700 transition-all text-sm"
             >
-              สำหรับสถานประกอบการ (Client Portal)
+              สำหรับสถานประกอบการ
             </button>
           </div>
         </motion.div>

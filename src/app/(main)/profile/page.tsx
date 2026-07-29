@@ -12,16 +12,16 @@ import { Input } from "@/components/ui/input";
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
-    name: "สมชาย วิศวกรเก่งกล้า",
-    studentId: "650710123",
+    name: "Theerawit Waithayawan",
+    studentId: "6510503456",
     major: "นิสิตชั้นปีที่ 3 • วิศวกรรมคอมพิวเตอร์",
-    gpax: "3.85",
+    gpax: "3.88",
     location: "กรุงเทพมหานคร, ประเทศไทย",
-    email: "somchai.w@ku.th",
-    phone: "081-234-5678",
-    bio: "นิสิตชั้นปีที่ 3 ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเกษตรศาสตร์ มีความหลงใหลในสถาปัตยกรรมระบบ Microservices และ Cloud Infrastructure กำลังมองหาโอกาสฝึกงานและสหกิจศึกษาในตำแหน่ง Software Engineer เพื่อนำทักษะทางเทคนิคมาประยุกต์ใช้ในการแก้ปัญหาจริง และพัฒนาซอฟต์แวร์ที่มีประสิทธิภาพสูง",
-    github: "github.com/somchai-dev",
-    linkedin: "linkedin.com/in/somchai-w"
+    email: "theerawit.w@ku.th",
+    phone: "082-998-8877",
+    bio: "นิสิตชั้นปีที่ 3 ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเกษตรศาสตร์ มีความชื่นชอบและเชี่ยวชาญการพัฒนา Web Applications, Software Engineering และ AI Integration มุ่งมั่นเรียนรู้เทคโนโลยีใหม่ๆ และกำลังมองหาโอกาสปฏิบัติงานฝึกงาน / สหกิจศึกษาในตำแหน่ง Full-Stack Engineer หรือ Software Engineer",
+    github: "github.com/TheerawitDev",
+    linkedin: "linkedin.com/in/theerawit-w"
   });
 
   const [tempProfile, setTempProfile] = useState({ ...profile });
@@ -53,14 +53,13 @@ export default function ProfilePage() {
         </div>
         <div className="px-8 pb-8 relative">
           <div className="flex justify-between items-end -mt-14 mb-4">
-            <Avatar className="w-28 h-28 border-4 border-white shadow-md rounded-2xl shrink-0">
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80"
-                alt="Profile"
-                className="object-cover"
+            <div className="w-28 h-28 rounded-full border-4 border-white shadow-md overflow-hidden shrink-0 bg-slate-100">
+              <img
+                src="/profile.jpg"
+                alt="Theerawit Waithayawan"
+                className="w-full h-full object-cover object-center"
               />
-              <AvatarFallback className="bg-slate-900 text-white font-bold">สช</AvatarFallback>
-            </Avatar>
+            </div>
 
             {!isEditing ? (
               <Button
@@ -293,11 +292,11 @@ export default function ProfilePage() {
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">ทักษะทางเทคนิค (Verified)</h4>
                 <div className="flex flex-wrap gap-1.5">
-                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">Java</Badge>
-                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">React.js</Badge>
                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">TypeScript</Badge>
+                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">React.js</Badge>
+                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">Next.js</Badge>
+                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">Node.js</Badge>
                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">Python</Badge>
-                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-semibold text-xs">PostgreSQL</Badge>
                 </div>
               </div>
 
@@ -308,7 +307,7 @@ export default function ProfilePage() {
                 <div className="flex flex-wrap gap-1.5">
                   <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 text-xs">Docker</Badge>
                   <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 text-xs">Git / GitHub</Badge>
-                  <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 text-xs">Agile Methodology</Badge>
+                  <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 text-xs">Tailwind CSS</Badge>
                 </div>
               </div>
             </CardContent>
@@ -321,20 +320,20 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent className="p-5 flex flex-col gap-3">
               <a
-                href="https://github.com"
+                href={`https://${profile.github}`}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-between text-xs text-slate-700 hover:text-green-600 font-semibold group p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <Code2 className="w-4 h-4 text-slate-500" />
-                  <span>GitHub Repository</span>
+                  <span>GitHub ({profile.github})</span>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-green-600" />
               </a>
 
               <a
-                href="https://linkedin.com"
+                href={`https://${profile.linkedin}`}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-between text-xs text-slate-700 hover:text-green-600 font-semibold group p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"

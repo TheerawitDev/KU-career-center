@@ -66,8 +66,8 @@ export function TopNav() {
           <div className="flex items-center gap-4">
             {!isClientPortal ? (
               <div className="hidden lg:block">
-                <Link href="/profile" className="rounded-full w-10 h-10 overflow-hidden border-2 border-slate-200 cursor-pointer hover:border-green-500 transition-colors block">
-                  <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full object-cover" />
+                <Link href="/profile" className="rounded-full w-10 h-10 overflow-hidden border-2 border-slate-200 cursor-pointer hover:border-green-500 transition-colors block shrink-0">
+                  <img src="/profile.jpg" alt="Theerawit Waithayawan" className="w-full h-full object-cover object-center" />
                 </Link>
               </div>
             ) : (
@@ -121,7 +121,7 @@ export function TopNav() {
                     className="flex items-center gap-3 text-slate-600 font-medium hover:text-green-600 transition-colors"
                   >
                     <div className="rounded-full w-8 h-8 overflow-hidden border border-slate-200">
-                      <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full object-cover" />
+                      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Profile" className="w-full h-full object-cover" />
                     </div>
                     โปรไฟล์ของฉัน
                   </Link>
