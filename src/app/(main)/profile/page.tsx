@@ -44,16 +44,16 @@ export default function ProfilePage() {
     <div className="flex flex-col gap-6 max-w-5xl mx-auto pb-16">
       {/* Header Banner & Card */}
       <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white rounded-2xl p-0">
-        <div className="h-44 w-full relative bg-slate-900">
+        <div className="h-36 sm:h-44 w-full relative bg-slate-900">
           <img
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80"
             alt="Profile Banner"
             className="w-full h-full object-cover opacity-80"
           />
         </div>
-        <div className="px-8 pb-8 relative">
-          <div className="flex justify-between items-end -mt-14 mb-4">
-            <div className="w-28 h-28 rounded-full border-4 border-white shadow-md overflow-hidden shrink-0 bg-slate-100">
+        <div className="px-5 sm:px-8 pb-6 sm:pb-8 relative">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end -mt-12 sm:-mt-14 mb-4 gap-3">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-md overflow-hidden shrink-0 bg-slate-100">
               <img
                 src="/profile.jpg"
                 alt="Theerawit Waithayawan"
@@ -65,13 +65,13 @@ export default function ProfilePage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="gap-2 border-slate-200 hover:bg-slate-50 font-bold text-xs"
+                className="gap-2 border-slate-200 hover:bg-slate-50 font-bold text-xs self-start sm:self-auto"
                 onClick={handleStartEdit}
               >
                 <Edit2 className="w-3.5 h-3.5" /> แก้ไขข้อมูลโปรไฟล์
               </Button>
             ) : (
-              <div className="flex gap-2">
+              <div className="flex gap-2 self-start sm:self-auto">
                 <Button
                   variant="outline"
                   size="sm"
@@ -95,8 +95,8 @@ export default function ProfilePage() {
           <div className="space-y-2">
             {!isEditing ? (
               <>
-                <div className="flex items-center gap-3">
-                  <h1 className="text-2xl font-extrabold text-slate-900">{profile.name}</h1>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">{profile.name}</h1>
                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 font-bold text-xs">
                     รหัสนิสิต {profile.studentId}
                   </Badge>
@@ -105,14 +105,15 @@ export default function ProfilePage() {
                   </Badge>
                 </div>
                 <p className="text-slate-600 font-bold text-sm">{profile.major}</p>
-                <div className="flex items-center gap-4 text-xs text-slate-500 font-medium">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-500 font-medium">
                   <span>เกรดเฉลี่ยสะสม (GPAX): <strong className="text-slate-900 font-extrabold text-sm">{profile.gpax}</strong></span>
-                  <span>• สถานะ: <strong className="text-green-600 font-bold">พร้อมรับการเสนอฝึกงานและสหกิจศึกษา</strong></span>
+                  <span className="hidden sm:inline">•</span>
+                  <span>สถานะ: <strong className="text-green-600 font-bold">พร้อมรับการเสนอฝึกงานและสหกิจศึกษา</strong></span>
                 </div>
               </>
             ) : (
               <div className="grid gap-3 max-w-2xl bg-slate-50 p-4 rounded-xl border border-slate-200">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-xs font-bold text-slate-700 block mb-1">ชื่อ-นามสกุล</label>
                     <Input
@@ -150,7 +151,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-5 mt-6 text-xs text-slate-600 font-medium border-t border-slate-100 pt-4">
+          <div className="flex flex-wrap gap-4 sm:gap-5 mt-6 text-xs text-slate-600 font-medium border-t border-slate-100 pt-4">
             {!isEditing ? (
               <>
                 <div className="flex items-center gap-1.5">
@@ -208,7 +209,7 @@ export default function ProfilePage() {
                 แนะนำตัวและเป้าหมายสายอาชีพ
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-5 sm:p-6">
               {!isEditing ? (
                 <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
                   {profile.bio}
@@ -234,7 +235,7 @@ export default function ProfilePage() {
                 ประสบการณ์และผลงาน (Experience & Projects)
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-5 sm:p-6">
               <div className="relative border-l-2 border-slate-100 ml-3 pl-6 space-y-8">
                 <div className="relative">
                   <div className="absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-green-600 bg-white"></div>
@@ -264,7 +265,7 @@ export default function ProfilePage() {
             <CardHeader className="pb-3 border-b border-slate-100">
               <CardTitle className="text-base font-extrabold text-slate-900">ประวัติการศึกษา</CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-5 sm:p-6">
               <div className="flex gap-4 items-center">
                 <div className="w-12 h-12 bg-green-700 text-white rounded-xl flex items-center justify-center font-extrabold text-sm shrink-0 border border-green-800 shadow-xs">
                   KU
