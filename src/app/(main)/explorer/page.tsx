@@ -50,14 +50,14 @@ export default function ExplorerPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">สำรวจสายอาชีพวิศวกรรม (Career Explorer)</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">สำรวจสายอาชีพวิศวกรรม</h1>
           <p className="text-slate-500 mt-1">
-            ฐานข้อมูลสายอาชีพวิศวกรรมสากลและในประเทศไทย ({careerRolesData.length} ตำแหน่งงานจริงในตลาด)
+            ฐานข้อมูลสายอาชีพวิศวกรรมในประเทศไทยและต่างประเทศ พร้อมช่วงเงินเดือนและทักษะที่ตลาดต้องการ
           </p>
         </div>
 
         <Badge variant="secondary" className="bg-green-50 text-green-700 font-semibold px-3.5 py-1.5 text-xs self-start md:self-auto border border-green-200">
-          อัปเดตข้อมูลสายอาชีพจริง 2026 ({careerRolesData.length} ตำแหน่ง)
+          อัปเดตข้อมูล 100 ตำแหน่งงาน
         </Badge>
       </div>
 
@@ -66,7 +66,7 @@ export default function ExplorerPage() {
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <Input
-            placeholder="ค้นหาตำแหน่งงานวิศวกร (เช่น DevOps, EV Battery, Structural, Biomaterials, PLC), ทักษะ, หรือบริษัท..."
+            placeholder="ค้นหาตำแหน่งงานวิศวกร ทักษะสำคัญ หรือบริษัทชั้นนำ..."
             className="pl-10 h-11 bg-white border-slate-200 text-sm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -94,7 +94,7 @@ export default function ExplorerPage() {
 
       <div className="flex justify-between items-center text-xs text-slate-500 font-medium">
         <span>พบบรรจุสายอาชีพตรงตามเงื่อนไข {filteredRoles.length} ตำแหน่ง</span>
-        <span>อ้างอิงฐานข้อมูลเงินเดือนวิศวกรจริงในประเทศไทย</span>
+        <span>อ้างอิงฐานข้อมูลเงินเดือนวิศวกรในประเทศไทย</span>
       </div>
 
       {/* Role Cards Grid */}
@@ -187,7 +187,7 @@ export default function ExplorerPage() {
                   </DialogTitle>
                 </div>
                 <Badge className="bg-green-600 text-white font-bold text-xs">
-                  {selectedRoleDetail.match}% Match score
+                  ตรงกับทักษะ {selectedRoleDetail.match}%
                 </Badge>
               </div>
             </div>
@@ -203,12 +203,12 @@ export default function ExplorerPage() {
               {/* Salary & Demand Breakdown */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200">
-                  <span className="text-xs text-emerald-800 font-semibold block">ช่วงเงินเดือนในประเทศไทย</span>
+                  <span className="text-xs text-emerald-800 font-semibold block">ช่วงเงินเดือนแรกบรรจุในไทย</span>
                   <span className="text-lg font-bold text-emerald-950 mt-1 block">{selectedRoleDetail.salary}</span>
                 </div>
 
                 <div className="p-4 rounded-lg bg-indigo-50 border border-indigo-200">
-                  <span className="text-xs text-indigo-800 font-semibold block">ความต้องการตัวในตลาดแรงงาน</span>
+                  <span className="text-xs text-indigo-800 font-semibold block">ความต้องการในตลาดแรงงาน</span>
                   <span className="text-lg font-bold text-indigo-950 mt-1 block">{selectedRoleDetail.demand}</span>
                 </div>
               </div>
@@ -227,7 +227,7 @@ export default function ExplorerPage() {
 
               {/* Career Growth Path */}
               <div>
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">เส้นทางเติบโตในอาชีพ (Career Growth Path)</h4>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">เส้นทางเติบโตในสายอาชีพ</h4>
                 <div className="flex flex-col gap-2">
                   {selectedRoleDetail.careerPath.map((step, idx) => (
                     <div key={idx} className="flex items-center gap-3 text-xs font-medium text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-200">
