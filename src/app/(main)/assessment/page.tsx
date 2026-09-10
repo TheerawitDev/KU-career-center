@@ -2,309 +2,475 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { internships, Internship } from "@/data/internships";
-import { Building, MapPin, Briefcase, Star, ArrowRight } from "lucide-react";
+import { diagnosticQuestions, calculateFateDiagnostic, DiagnosticResult } from "@/data/assessment-questions";
+import {
+  Building,
+  MapPin,
+  Briefcase,
+  ArrowRight,
+  ShieldCheck,
+  Cpu,
+  BrainCircuit,
+  Compass,
+  CheckCircle2,
+  TrendingUp,
+  ChevronLeft,
+  ChevronRight,
+  Check
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-const questions = [
-  {
-    title: "ความสนใจในลักษณะงาน",
-    description: "เลือกประเภทงานที่คุณรู้สึกสนุกและถนัดที่สุด (เลือกได้มากกว่า 1 ข้อ)",
-    type: "checkbox",
-    options: [
-      { label: "การเขียนโค้ดและพัฒนาโปรแกรมคอมพิวเตอร์", tags: ["software", "code", "frontend", "backend", "web"] },
-      { label: "การออกแบบโครงสร้างสิ่งก่อสร้างและอาคาร", tags: ["civil", "construction", "structure", "field"] },
-      { label: "การวิเคราะห์ข้อมูลและสร้างปัญญาประดิษฐ์ (AI)", tags: ["data", "analysis", "ai", "machine learning", "python", "research"] },
-      { label: "การจัดการระบบคลาวด์และโครงสร้างพื้นฐานไอที", tags: ["cloud", "infrastructure", "network", "devops"] },
-      { label: "การทำงานประกอบระบบไฟฟ้ารวมถึงวงจรอิเล็กทรอนิกส์", tags: ["electrical", "power", "hardware"] }
-    ]
-  },
-  {
-    title: "สภาพแวดล้อมการทำงานที่ชอบ",
-    description: "คุณชื่นชอบการทำงานในบรรยากาศและสภาพแวดล้อมแบบไหน?",
-    type: "radio",
-    options: [
-      { label: "ทำงานในออฟฟิศ หรือบริษัทเทคโนโลยียุคใหม่", tags: ["software", "data", "cloud", "analysis"] },
-      { label: "ลงพื้นที่จริง หน้างานกลางแจ้ง หรือคุมโปรเจกต์ก่อสร้าง", tags: ["civil", "field", "electrical", "construction"] },
-      { label: "ทำงานจากที่บ้าน (Remote Work)", tags: ["software", "cloud", "web"] },
-      { label: "ทำงานวิจัย ค้นคว้า และทดลองในห้องแล็บปิด", tags: ["research", "data", "ai"] }
-    ]
-  },
-  {
-    title: "เครื่องมือหรือทักษะที่ถนัดที่สุด",
-    description: "ทักษะพื้นฐานและเครื่องมือชิ้นไหนที่คุณถนัดใช้งานมากที่สุด?",
-    type: "radio",
-    options: [
-      { label: "React, Node.js หรือเฟรมเวิร์กพัฒนาเว็บแอปพลิเคชัน", tags: ["software", "frontend", "backend", "web"] },
-      { label: "Python, SQL, DataFrame หรือไลบรารีคณิตศาสตร์", tags: ["data", "python", "analysis", "machine learning"] },
-      { label: "AutoCAD, โปรแกรมคำนวณโครงสร้างกลศาสตร์", tags: ["civil", "structure", "autoCAD"] },
-      { label: "PLC, การออกแบบวงจรไฟฟ้า", tags: ["electrical", "power", "hardware"] },
-      { label: "AWS, Docker, Linux, หรือระบบเครือข่าย", tags: ["cloud", "infrastructure", "devops", "network"] }
-    ]
-  }
-];
 
 export default function AssessmentPage() {
   const [step, setStep] = useState(0);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  
-  // Temporary state for the current step
-  const [currentStepSelections, setCurrentStepSelections] = useState<string[]>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+  const [activeModule, setActiveModule] = useState(1);
 
-  const totalSteps = questions.length + 1; // Start screen + questions + result
+  const totalQuestions = diagnosticQuestions.length; // 50 Questions
+  const totalSteps = totalQuestions + 1; // 0 = welcome, 1..50 = questions, 51 = result
+
+  const handleSelectOption = (questionId: number, optionId: string) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: optionId
+    }));
+  };
 
   const handleNext = () => {
-    // Add current selections to the global tags pool
-    if (step > 0 && step <= questions.length) {
-      setSelectedTags(prev => [...prev, ...currentStepSelections]);
-    }
-    setCurrentStepSelections([]);
-    setStep(prev => prev + 1);
-  };
-
-  const handleOptionToggle = (tags: string[], type: string) => {
-    if (type === "radio") {
-      setCurrentStepSelections(tags);
-    } else {
-      // For checkbox, we toggle tags. This is a bit simplified, normally we'd track selections by index, 
-      // but adding/removing tags directly works for this demo.
-      const hasAllTags = tags.every(t => currentStepSelections.includes(t));
-      if (hasAllTags) {
-        setCurrentStepSelections(prev => prev.filter(t => !tags.includes(t)));
-      } else {
-        setCurrentStepSelections(prev => [...prev, ...tags]);
+    setStep((prev) => {
+      const nextStep = prev + 1;
+      if (nextStep >= 1 && nextStep <= 50) {
+        const q = diagnosticQuestions[nextStep - 1];
+        if (q) setActiveModule(q.moduleIndex);
       }
+      return nextStep;
+    });
+  };
+
+  const handlePrev = () => {
+    setStep((prev) => {
+      const prevStep = Math.max(0, prev - 1);
+      if (prevStep >= 1 && prevStep <= 50) {
+        const q = diagnosticQuestions[prevStep - 1];
+        if (q) setActiveModule(q.moduleIndex);
+      }
+      return prevStep;
+    });
+  };
+
+  const handleJumpToModule = (modIdx: number) => {
+    setActiveModule(modIdx);
+    const qIndex = diagnosticQuestions.findIndex((q) => q.moduleIndex === modIdx);
+    if (qIndex !== -1) {
+      setStep(qIndex + 1);
     }
   };
 
-  // Result calculation
-  let matchedInternships: Internship[] = [];
-  let primaryRole = "";
-  let primaryDesc = "";
+  const handleReset = () => {
+    setStep(0);
+    setSelectedAnswers({});
+    setActiveModule(1);
+  };
 
-  if (step === totalSteps) {
-    // Calculate scores
-    const scoredInternships = internships.map(job => {
-      const matchCount = job.matchTags.filter(tag => selectedTags.includes(tag)).length;
-      return { ...job, score: matchCount };
+  const answeredCount = Object.keys(selectedAnswers).length;
+
+  // Compute final diagnostic result
+  const isFinished = step === totalSteps;
+  let diagnosticResult: DiagnosticResult | null = null;
+  let matchedJobs: Internship[] = [];
+
+  if (isFinished) {
+    const selectedIds = Object.values(selectedAnswers);
+    diagnosticResult = calculateFateDiagnostic(selectedIds);
+
+    const cat = diagnosticResult.primaryCategory;
+    matchedJobs = internships.filter((job) => {
+      if (cat.includes("คอมพิวเตอร์") || cat.includes("ซอฟต์แวร์")) {
+        return job.matchTags.some((t) => ["software", "code", "frontend", "backend", "web"].includes(t));
+      } else if (cat.includes("ข้อมูล") || cat.includes("ปัญญาประดิษฐ์")) {
+        return job.matchTags.some((t) => ["data", "analysis", "ai", "machine learning", "python", "research"].includes(t));
+      } else if (cat.includes("โยธา")) {
+        return job.matchTags.some((t) => ["civil", "construction", "field", "structure"].includes(t));
+      } else if (cat.includes("หุ่นยนต์") || cat.includes("ไฟฟ้า") || cat.includes("เครื่องกล")) {
+        return job.matchTags.some((t) => ["electrical", "power", "hardware"].includes(t));
+      }
+      return true;
     });
 
-    // Sort by score and take top 3
-    matchedInternships = scoredInternships
-      .filter(job => job.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
-
-    // Determine primary role based on top matching tags
-    const topTag = selectedTags.sort((a,b) =>
-          selectedTags.filter(v => v===a).length
-        - selectedTags.filter(v => v===b).length
-    ).pop() || "";
-
-    if (topTag === "software" || topTag === "web" || topTag === "frontend" || topTag === "code") {
-      primaryRole = "วิศวกรซอฟต์แวร์ (Software Engineer)";
-      primaryDesc = "คุณมีทักษะในการเขียนโปรแกรมและการคิดอย่างเป็นระบบ เหมาะสมอย่างยิ่งกับการพัฒนาแอปพลิเคชันและซอฟต์แวร์ที่สร้างอิมแพคได้ทันที";
-    } else if (topTag === "data" || topTag === "analysis" || topTag === "ai") {
-      primaryRole = "วิศวกรข้อมูล / นักวิเคราะห์ข้อมูล (Data / AI Engineer)";
-      primaryDesc = "คุณชื่นชอบการทำงานกับตัวเลขและการค้นหาความจริงจากข้อมูล อาชีพนี้กำลังเป็นที่ต้องการสูงมากในตลาดยุคดิจิทัล";
-    } else if (topTag === "civil" || topTag === "construction" || topTag === "field") {
-      primaryRole = "วิศวกรโยธา (Civil Engineer)";
-      primaryDesc = "คุณชอบการออกแบบเชิงโครงสร้างและการลงพื้นที่ปฏิบัติงานจริง เหมาะสมกับการทำงานในโครงการก่อสร้างและโครงสร้างพื้นฐาน";
-    } else if (topTag === "cloud" || topTag === "infrastructure" || topTag === "devops") {
-      primaryRole = "วิศวกรระบบคลาวด์ (Cloud/DevOps Engineer)";
-      primaryDesc = "คุณมีความสนใจในการวางระบบเครือข่ายและเทคโนโลยีเบื้องหลังที่ทำให้ซอฟต์แวร์ทำงานได้อย่างราบรื่นและเสถียร";
-    } else {
-      primaryRole = "วิศวกรไฟฟ้า / ฮาร์ดแวร์ (Electrical Engineer)";
-      primaryDesc = "คุณมีความเชี่ยวชาญในการจัดการระบบวงจร พลังงาน และฮาร์ดแวร์ต่างๆ ซึ่งเป็นรากฐานสำคัญของระบบอุตสาหกรรม";
+    if (matchedJobs.length === 0) {
+      matchedJobs = internships.slice(0, 3);
     }
   }
 
+  const moduleTitles = [
+    "1. ตรรกะ & อัลกอริทึม",
+    "2. คณิตศาสตร์ & ข้อมูล",
+    "3. ฮาร์ดแวร์ & ฟิสิกส์",
+    "4. การบริหาร & คุณภาพ",
+    "5. จริยธรรม & ผู้นำ"
+  ];
+
   return (
-    <div className="flex flex-col gap-8 max-w-4xl mx-auto pb-12">
+    <div className="flex flex-col gap-6 max-w-4xl mx-auto pb-16">
+      {/* Page Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">แบบประเมินทักษะและความสนใจ</h1>
-        <p className="text-slate-500 mt-2">ค้นหาสายงานวิศวกรรมที่เหมาะสมกับบุคลิกภาพ พร้อมแมตช์ที่ฝึกงานทันที</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+          ประเมินสมรรถนะและทักษะทางวิศวกรรม
+        </h1>
+        <p className="text-slate-500 mt-2 text-sm max-w-xl mx-auto">
+          แบบประเมิน 5 หมวดวิศวกรรม เพื่อค้นหาสายอาชีพและตำแหน่งงานฝึกงานที่เหมาะสมกับคุณที่สุด
+        </p>
       </div>
 
-      {step > 0 && step < totalSteps && (
-        <div className="flex items-center gap-4 mb-2 animate-in fade-in max-w-3xl mx-auto w-full">
-          <Progress value={(step / (totalSteps - 1)) * 100} className="h-2.5 bg-slate-100 [&>div]:bg-slate-900" />
-          <span className="text-sm font-semibold text-slate-500 whitespace-nowrap">ขั้นตอนที่ {step} จาก {totalSteps - 1}</span>
+      {/* Progress Bar & Module Tabs for Active Questions */}
+      {step > 0 && step <= totalQuestions && (
+        <div className="space-y-3 max-w-3xl mx-auto w-full">
+          {/* Module Selector Tabs */}
+          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+            {moduleTitles.map((modTitle, idx) => {
+              const modIdx = idx + 1;
+              const isCurrentMod = activeModule === modIdx;
+
+              return (
+                <button
+                  key={modIdx}
+                  onClick={() => handleJumpToModule(modIdx)}
+                  className={cn(
+                    "px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors border",
+                    isCurrentMod
+                      ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+                      : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                  )}
+                >
+                  {modTitle}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Progress Indicator */}
+          <div className="flex items-center justify-between gap-4 text-xs font-semibold text-slate-600 bg-white p-3 rounded-xl border border-slate-200">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-900 font-bold">ความคืบหน้ารวม:</span>
+              <span className="text-green-600 font-extrabold">{answeredCount} / {totalQuestions} ข้อ</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Progress value={(answeredCount / totalQuestions) * 100} className="w-28 md:w-44 h-2 bg-slate-100 [&>div]:bg-green-600" />
+              {answeredCount >= 20 && (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="bg-green-600 hover:bg-green-700 text-white text-xs font-bold h-7 px-3 rounded-lg"
+                  onClick={() => setStep(totalSteps)}
+                >
+                  สรุปผลประเมิน
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Step 0: Welcome / Start Screen */}
+      {/* STEP 0: Welcome Screen */}
       {step === 0 && (
-        <Card className="max-w-3xl mx-auto border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white animate-in fade-in slide-in-from-bottom-4 duration-500 w-full">
-          <CardHeader className="text-center pb-2 pt-10">
-            <CardTitle className="text-2xl font-bold text-slate-800">ค้นพบสายงานวิศวกรรมที่ใช่สำหรับคุณ</CardTitle>
-            <CardDescription className="text-base mt-2">
-              ทำแบบประเมินของเราเพื่อจับคู่ความสนใจ ทักษะ และลักษณะการทำงานของคุณ เข้ากับสายอาชีพและตำแหน่งฝึกงานจริงๆ
+        <Card className="max-w-3xl mx-auto border border-slate-200 shadow-sm bg-white w-full rounded-2xl overflow-hidden">
+          <CardHeader className="text-center pb-4 pt-8 border-b border-slate-100 bg-white">
+            <CardTitle className="text-2xl font-bold text-slate-900">
+              แบบประเมินทักษะและสมรรถนะวิศวกรรม
+            </CardTitle>
+            <CardDescription className="text-slate-500 text-sm mt-1 max-w-lg mx-auto">
+              วิเคราะห์ความถนัดเชิงลึกผ่านการจำลองสถานการณ์วิศวกรรมจริง 5 หมวดสมรรถนะ
             </CardDescription>
           </CardHeader>
-          <CardContent className="py-8">
-            <div className="grid gap-6 max-w-md mx-auto">
-              <div className="flex items-start gap-4">
-                <span className="text-xl font-bold text-slate-400 mt-0.5">01</span>
-                <div className="text-left">
-                  <h4 className="font-semibold text-slate-800">วิเคราะห์ทักษะเฉพาะทาง</h4>
-                  <p className="text-sm text-slate-500">ตอบคำถามสั้นๆ เกี่ยวกับสิ่งที่คุณทำได้ดีที่สุด</p>
+
+          <CardContent className="py-6 px-6 md:px-10 space-y-3">
+            <div className="space-y-2.5">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">หมวดตรรกะเชิงระบบและอัลกอริทึม</h4>
+                  <p className="text-xs text-slate-500">วิเคราะห์การแก้ปัญหาระบบและโครงสร้างโค้ด</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 border-t border-slate-100 pt-6">
-                <span className="text-xl font-bold text-slate-400 mt-0.5">02</span>
-                <div className="text-left">
-                  <h4 className="font-semibold text-slate-800">ประมวลผลด้วย AI Matcher</h4>
-                  <p className="text-sm text-slate-500">ระบบจะนำคำตอบไปเทียบกับฐานข้อมูลทักษะกว่า 100+ แบบ</p>
+
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">หมวดคณิตศาสตร์ ข้อมูล และสถิติ</h4>
+                  <p className="text-xs text-slate-500">ประเมินสถิติ โมเดล AI และการประมวลผลข้อมูล</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 border-t border-slate-100 pt-6">
-                <span className="text-xl font-bold text-slate-400 mt-0.5">03</span>
-                <div className="text-left">
-                  <h4 className="font-semibold text-slate-800">รับคำแนะนำตำแหน่งฝึกงาน</h4>
-                  <p className="text-sm text-slate-500">ดูรายชื่อบริษัทที่กำลังเปิดรับสมัครและตรงกับคุณที่สุด</p>
+
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">หมวดฮาร์ดแวร์ ฟิสิกส์ และกลศาสตร์</h4>
+                  <p className="text-xs text-slate-500">ประเมินวงจรไฟฟ้า กลศาสตร์คำนวณ และวัสดุศาสตร์</p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0">4</span>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">หมวดการบริหารกระบวนการ และคุณภาพ</h4>
+                  <p className="text-xs text-slate-500">วิเคราะห์ Lean Six Sigma และการบริหารโครงการ</p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0">5</span>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">หมวดจริยธรรมวิศวกรรม และผู้นำยั่งยืน</h4>
+                  <p className="text-xs text-slate-500">วิเคราะห์ภาวะผู้นำ จริยธรรมวิชาชีพ และ Net-Zero ESG</p>
                 </div>
               </div>
             </div>
+
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 leading-relaxed font-medium">
+              💡 <strong>คำแนะนำ:</strong> เลือกคำตอบที่สะท้อนทักษะและความสนใจจริงของคุณ คุณสามารถกดสรุปผลประเมินล่วงหน้าได้ตลอดเวลาเมื่อตอบครบ 20 ข้อขึ้นไป
+            </div>
           </CardContent>
-          <CardFooter className="flex justify-center pt-2 pb-10">
-            <Button onClick={handleNext} size="lg" className="w-full max-w-md rounded-full bg-slate-900 hover:bg-slate-800 text-white h-12 text-base font-semibold shadow-md hover:shadow-lg transition-all">
-              เริ่มทำแบบประเมิน
+
+          <CardFooter className="flex justify-center pb-8 pt-2">
+            <Button
+              onClick={handleNext}
+              size="lg"
+              className="w-full max-w-md rounded-full bg-green-600 hover:bg-green-700 text-white h-12 text-base font-bold shadow-sm transition-all"
+            >
+              เริ่มทำแบบประเมิน <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </CardFooter>
         </Card>
       )}
 
-      {/* Questions Steps */}
-      {step > 0 && step < totalSteps && (() => {
-        const qIndex = step - 1;
-        const q = questions[qIndex];
+      {/* STEP 1..50: Question Screen */}
+      {step > 0 && step <= totalQuestions && (() => {
+        const q = diagnosticQuestions[step - 1];
+        const currentSelectedId = selectedAnswers[q.id];
+
         return (
-          <Card className="max-w-3xl mx-auto w-full border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white animate-in fade-in slide-in-from-bottom-4">
-            <CardHeader>
-              <CardTitle className="text-xl">{q.title}</CardTitle>
-              <CardDescription className="text-sm">{q.description}</CardDescription>
+          <Card className="max-w-3xl mx-auto w-full border border-slate-200 shadow-sm bg-white rounded-2xl overflow-hidden">
+            <CardHeader className="border-b border-slate-100 bg-white p-5 md:p-6">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                  {q.section}
+                </span>
+                <span className="text-xs font-bold text-slate-500">
+                  ข้อ {step} / 50
+                </span>
+              </div>
+
+              <CardTitle className="text-base md:text-lg font-bold text-slate-900 leading-snug">
+                {q.title}
+              </CardTitle>
+              <CardDescription className="text-xs text-slate-500 mt-1">
+                {q.description}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-3">
-              {q.options.map((option, i) => {
-                const isSelected = option.tags.every(t => currentStepSelections.includes(t));
+
+            <CardContent className="p-5 md:p-6 grid gap-3">
+              {q.options.map((option) => {
+                const isSelected = currentSelectedId === option.id;
+
                 return (
-                  <label key={i} className="flex items-start gap-3 p-4 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 [&:has(:checked)]:border-slate-900 [&:has(:checked)]:bg-slate-50 transition-all">
-                    <input 
-                      type={q.type} 
-                      name={`question_${step}`} 
-                      className="mt-1 w-4 h-4 text-slate-900 border-slate-300 focus:ring-slate-900" 
-                      checked={isSelected}
-                      onChange={() => handleOptionToggle(option.tags, q.type)}
-                    />
-                    <span className="text-slate-700 font-semibold text-sm">{option.label}</span>
-                  </label>
+                  <div
+                    key={option.id}
+                    onClick={() => handleSelectOption(q.id, option.id)}
+                    className={cn(
+                      "p-4 rounded-xl border cursor-pointer transition-all flex items-start gap-3.5",
+                      isSelected
+                        ? "border-green-600 bg-green-50/40 shadow-sm"
+                        : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 bg-white"
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-colors",
+                        isSelected ? "border-green-600 bg-green-600 text-white" : "border-slate-300 bg-white"
+                      )}
+                    >
+                      {isSelected && <Check className="w-3.5 h-3.5" />}
+                    </div>
+
+                    <div className="flex-1">
+                      <h4 className={cn("font-bold text-sm leading-snug", isSelected ? "text-slate-900" : "text-slate-800")}>
+                        {option.label}
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                        {option.detail}
+                      </p>
+                    </div>
+                  </div>
                 );
               })}
             </CardContent>
-            <CardFooter className="flex justify-between border-t border-slate-50 pt-6">
-              <Button variant="ghost" onClick={() => { setStep(prev => prev - 1); setCurrentStepSelections([]); }} className="text-slate-500">ย้อนกลับ</Button>
-              <Button 
-                onClick={handleNext} 
-                className="bg-slate-900 hover:bg-slate-800 text-white px-8"
-                disabled={currentStepSelections.length === 0}
-              >
-                {step === totalSteps - 1 ? 'ดูผลลัพธ์' : 'ถัดไป'}
+
+            <CardFooter className="flex justify-between border-t border-slate-100 p-5 md:p-6 bg-white">
+              <Button variant="outline" onClick={handlePrev} className="text-slate-600 border-slate-200 text-xs font-semibold">
+                <ChevronLeft className="w-4 h-4 mr-1" /> ข้อก่อนหน้า
               </Button>
+
+              <div className="flex gap-2">
+                {step === totalQuestions ? (
+                  <Button
+                    onClick={handleNext}
+                    disabled={answeredCount < 5}
+                    className="bg-green-600 hover:bg-green-700 text-white font-bold px-6 shadow-sm text-xs"
+                  >
+                    สรุปผลการประเมิน
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleNext}
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 shadow-sm text-xs"
+                  >
+                    ข้อถัดไป <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                )}
+              </div>
             </CardFooter>
           </Card>
         );
       })()}
 
-      {/* Step 4: Final Result with Matches */}
-      {step === totalSteps && (
-        <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 w-full">
-          <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white">
-            <CardHeader className="text-center pb-2 pt-10">
-              <CardTitle className="text-2xl font-bold">ประมวลผลเสร็จสิ้น!</CardTitle>
-              <CardDescription className="text-base mt-2">
-                จากสิ่งที่คุณเลือก นี่คือสายอาชีพที่สะท้อนทักษะของคุณได้ดีที่สุด
-              </CardDescription>
+      {/* FINAL STEP: Competency Report */}
+      {isFinished && diagnosticResult && (
+        <div className="flex flex-col gap-6 w-full">
+          {/* Main Report Card */}
+          <Card className="border border-slate-200 shadow-sm bg-white rounded-2xl overflow-hidden">
+            <CardHeader className="p-8 text-center border-b border-slate-100 bg-white">
+              <Badge className="bg-green-100 text-green-800 font-semibold text-xs px-3 py-1 mb-3 self-center border-none">
+                คะแนนความเหมาะสม: {diagnosticResult.matchScore}% Match Index
+              </Badge>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-1">
+                {diagnosticResult.primaryRoleTitle}
+              </h2>
+              <span className="text-xs text-slate-500 font-medium uppercase tracking-wider block">
+                สายงานหลัก: <strong className="text-slate-800">{diagnosticResult.primaryCategory}</strong> (ประเมินจาก {answeredCount} ข้อ)
+              </span>
             </CardHeader>
-            <CardContent className="text-center py-6">
-              <div className="border border-green-200 rounded-3xl p-8 max-w-2xl mx-auto bg-green-50/50 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Star className="w-24 h-24 text-green-600" />
-                </div>
-                <h3 className="text-3xl font-extrabold text-slate-900 mb-4">{primaryRole}</h3>
-                <p className="text-slate-700 leading-relaxed text-lg z-10 relative">
-                  {primaryDesc}
+
+            <CardContent className="p-6 md:p-8 space-y-8">
+              {/* Detailed Description */}
+              <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">ผลวิเคราะห์สมรรถนะรายบุคคล</h4>
+                <p className="text-sm text-slate-700 leading-relaxed font-medium">
+                  {diagnosticResult.description}
                 </p>
+              </div>
+
+              {/* 4 Competency Bars */}
+              <div>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">คะแนนสมรรถนะ 4 มิติทางวิศวกรรม (Competency Matrix)</h4>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="flex justify-between text-xs font-bold">
+                      <span className="text-slate-800">1. System Logic & Architecture</span>
+                      <span className="text-green-600">{diagnosticResult.radarScores.systemLogic} / 99</span>
+                    </div>
+                    <Progress value={diagnosticResult.radarScores.systemLogic} className="h-2 bg-slate-100 [&>div]:bg-green-600" />
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="flex justify-between text-xs font-bold">
+                      <span className="text-slate-800">2. Quantitative & Math Reasoning</span>
+                      <span className="text-green-600">{diagnosticResult.radarScores.quantitative} / 99</span>
+                    </div>
+                    <Progress value={diagnosticResult.radarScores.quantitative} className="h-2 bg-slate-100 [&>div]:bg-green-600" />
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="flex justify-between text-xs font-bold">
+                      <span className="text-slate-800">3. Hardware & Physical Systems Integration</span>
+                      <span className="text-green-600">{diagnosticResult.radarScores.hardwarePhysics} / 99</span>
+                    </div>
+                    <Progress value={diagnosticResult.radarScores.hardwarePhysics} className="h-2 bg-slate-100 [&>div]:bg-green-600" />
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="flex justify-between text-xs font-bold">
+                      <span className="text-slate-800">4. Operations & Process Efficiency</span>
+                      <span className="text-green-600">{diagnosticResult.radarScores.operationsMgmt} / 99</span>
+                    </div>
+                    <Progress value={diagnosticResult.radarScores.operationsMgmt} className="h-2 bg-slate-100 [&>div]:bg-green-600" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Recommended Upskilling Skills */}
+              <div>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">ทักษะที่แนะนำให้พัฒนาเพิ่มเติม (Recommended Upskill Roadmap)</h4>
+                <div className="flex flex-wrap gap-2">
+                  {diagnosticResult.recommendedSkills.map((skill) => (
+                    <Badge key={skill} variant="outline" className="bg-slate-50 text-slate-800 text-xs px-3 py-1 font-semibold border-slate-200">
+                      ⚡ {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Career Growth Milestones */}
+              <div>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">เส้นทางเติบโตในสายอาชีพ (Career Progression Roadmap)</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {diagnosticResult.careerMilestones.map((stepName, idx) => (
+                    <div key={idx} className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                      <span className="w-5 h-5 rounded-full bg-slate-900 text-white text-[10px] font-bold inline-flex items-center justify-center mb-1">
+                        {idx + 1}
+                      </span>
+                      <span className="block text-xs font-bold text-slate-800 truncate">{stepName}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <div className="flex items-center justify-between mt-4 px-2">
-            <h2 className="text-xl font-bold text-slate-900">ที่ฝึกงานและสหกิจศึกษาที่แมตช์กับคุณ</h2>
-            <Link href="/internships" className="text-sm font-semibold text-green-600 hover:text-green-700 flex items-center gap-1">
-              ดูทั้งหมด <ArrowRight className="w-4 h-4" />
+          {/* Matched Internship Positions */}
+          <div className="flex items-center justify-between mt-4">
+            <h3 className="text-lg font-bold text-slate-900">ตำแหน่งฝึกงานและสหกิจศึกษาที่แมตช์กับคุณ</h3>
+            <Link href="/internships" className="text-xs font-semibold text-green-600 hover:text-green-700 flex items-center gap-1">
+              ดูตำแหน่งงานทั้งหมด <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {matchedInternships.length > 0 ? matchedInternships.map((job) => (
+            {matchedJobs.map((job) => (
               <Link href="/internships" key={job.id}>
-                <Card className="shadow-sm border-slate-200 hover:border-green-400 hover:shadow-md transition-all cursor-pointer group h-full">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col sm:flex-row gap-5">
-                      <div className="w-14 h-14 bg-slate-100 rounded-lg flex items-center justify-center text-xl font-bold text-slate-500 shrink-0 border border-slate-200 group-hover:bg-green-50 group-hover:text-green-600 transition-colors">
+                <Card className="shadow-sm border border-slate-200 hover:border-green-400 hover:shadow-md transition-all cursor-pointer group h-full bg-white rounded-xl">
+                  <CardContent className="p-5">
+                    <div className="flex gap-4 items-start">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-xl font-bold text-slate-600 shrink-0 border border-slate-200 group-hover:bg-green-50 group-hover:text-green-600 transition-colors">
                         {job.logo}
                       </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start gap-2 mb-1">
-                          <h3 className="text-base font-bold text-slate-900 group-hover:text-green-600 transition-colors line-clamp-2">
-                            {job.title}
-                          </h3>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-green-600 transition-colors truncate">
+                          {job.title}
+                        </h4>
+                        <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                          <Building className="w-3.5 h-3.5" />
+                          <span className="truncate">{job.company}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
-                          <Building className="w-4 h-4" />
-                          <span className="font-medium truncate">{job.company}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mb-4">
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5" />
-                            {job.location}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Briefcase className="w-3.5 h-3.5" />
-                            {job.type}
-                          </div>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5 mt-auto">
-                          {job.tags.slice(0, 3).map(tag => (
-                            <Badge key={tag} variant="secondary" className="bg-slate-100 text-slate-600 text-[10px] font-medium border-none">
-                              {tag}
-                            </Badge>
-                          ))}
-                          {job.tags.length > 3 && (
-                            <Badge variant="secondary" className="bg-slate-50 text-slate-400 text-[10px] border-none">
-                              +{job.tags.length - 3}
-                            </Badge>
-                          )}
+                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400 mt-2">
+                          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{job.location}</span>
+                          <span className="flex items-center gap-1"><Briefcase className="w-3 h-3" />{job.type}</span>
                         </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </Link>
-            )) : (
-              <div className="col-span-2 text-center py-10 text-slate-500 bg-white rounded-xl border border-dashed border-slate-200">
-                ยังไม่มีที่ฝึกงานที่แมตช์กับโปรไฟล์ของคุณในขณะนี้
-              </div>
-            )}
+            ))}
           </div>
-          
+
+          {/* Reset Button */}
           <div className="flex justify-center mt-6">
-            <Button variant="outline" onClick={() => { setStep(0); setSelectedTags([]); }} className="text-slate-500">
+            <Button variant="outline" onClick={handleReset} className="text-slate-600 border-slate-200">
               ทำแบบประเมินอีกครั้ง
             </Button>
           </div>

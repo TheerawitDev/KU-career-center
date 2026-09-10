@@ -1,96 +1,174 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Calendar, ChevronRight, Trophy, BookOpen, Briefcase, Compass, ArrowUpRight, CheckCircle2 } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Calendar,
+  ChevronRight,
+  Trophy,
+  CheckCircle2
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12 -mt-6">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+    <div className="space-y-6 pb-16 max-w-6xl mx-auto">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
         <div>
-          <h1 className="text-[36px] md:text-[42px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-500 leading-tight tracking-tight mb-2">
-            ภาพรวมของคุณ
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+            ภาพรวมระบบสำหรับนิสิต
           </h1>
-          <p className="text-[17px] text-slate-500 max-w-lg">
-            ยินดีต้อนรับกลับมา, <span className="font-semibold text-slate-700">นนทนันท์</span>! พร้อมที่จะพัฒนาเส้นทางอาชีพของคุณแล้วหรือยัง?
+          <p className="text-slate-500 mt-1 text-sm">
+            ยินดีต้อนรับกลับมา <strong className="text-slate-800 font-semibold">นนทนันท์</strong> • นิสิตวิศวกรรมคอมพิวเตอร์ ชั้นปีที่ 3
           </p>
         </div>
+
+        <Badge variant="outline" className="bg-slate-50 text-slate-600 border-slate-200 text-xs px-3 py-1 font-semibold self-start md:self-auto">
+          ภาคเรียนที่ 1 / 2569 • มหาวิทยาลัยเกษตรศาสตร์
+        </Badge>
       </div>
 
       <div className="grid gap-6 md:grid-cols-12">
-        {/* Profile Strength */}
-        <Card className="col-span-12 lg:col-span-4 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-gradient-to-br from-white to-green-50/30 overflow-hidden relative group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-150 duration-700"></div>
-          <CardHeader className="pb-2 relative z-10">
-            <CardTitle className="text-xl flex items-center gap-2">
-              <div className="p-2.5 bg-amber-100/80 rounded-xl">
-                <Trophy className="w-5 h-5 text-amber-600" />
-              </div>
-              ความสมบูรณ์ของโปรไฟล์
-            </CardTitle>
-            <CardDescription className="text-sm mt-1">ระดับ: ผู้เริ่มต้น (Beginner)</CardDescription>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="flex items-center justify-between mt-4 mb-2">
-              <span className="text-3xl font-bold text-slate-800">35<span className="text-lg text-slate-400 font-medium">%</span></span>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2.5 py-1 rounded-full flex items-center gap-1">
-                <ArrowUpRight className="w-3 h-3" /> +5% สัปดาห์นี้
-              </span>
+        {/* Profile Readiness Card */}
+        <Card className="col-span-12 lg:col-span-4 border border-slate-200 shadow-sm bg-white rounded-xl overflow-hidden flex flex-col justify-between">
+          <CardHeader className="pb-3 border-b border-slate-100 bg-slate-50/60">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-green-600" />
+                ความสมบูรณ์ของโปรไฟล์
+              </CardTitle>
+              <Badge className="bg-green-100 text-green-800 border-none text-[11px] font-semibold">
+                พร้อมสมัครงาน 75%
+              </Badge>
             </div>
-            <Progress value={35} className="h-2.5 mb-6 bg-slate-100 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-600" />
-            
-            <ul className="space-y-3 mb-6">
-              <li className="flex items-start gap-2 text-sm text-slate-600">
-                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                <span>เพิ่มทักษะที่ถนัด (+15%)</span>
-              </li>
-              <li className="flex items-start gap-2 text-sm text-slate-600">
-                <div className="w-4 h-4 rounded-full border-2 border-slate-200 mt-0.5 shrink-0"></div>
-                <span>เพิ่มประวัติการศึกษา (+20%)</span>
-              </li>
-            </ul>
+          </CardHeader>
 
-            <Link href="/profile" className={cn(buttonVariants({ variant: "default" }), "w-full bg-slate-900 hover:bg-slate-800 text-white shadow-md hover:shadow-lg transition-all")}>
-              อัปเดตโปรไฟล์ <ChevronRight className="w-4 h-4 ml-1" />
+          <CardContent className="p-6 flex-1 flex flex-col justify-between space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-slate-500 font-semibold">ระดับความพร้อมเตรียมตัวฝึกงาน</span>
+                <span className="text-xs font-bold text-slate-900">75%</span>
+              </div>
+              <Progress value={75} className="h-2 bg-slate-100 [&>div]:bg-green-600 mb-6" />
+
+              <div className="space-y-2.5 text-xs text-slate-600 font-medium">
+                <div className="flex items-center gap-2 text-slate-800">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
+                  <span>ทำแบบประเมินทักษะสมรรถนะสำเร็จ</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-800">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
+                  <span>กรอกข้อมูลประวัติการศึกษาครบถ้วน</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-400">
+                  <div className="w-4 h-4 rounded-full border-2 border-slate-300 shrink-0"></div>
+                  <span>อัปโหลดเรซูเม่ (Resume PDF)</span>
+                </div>
+              </div>
+            </div>
+
+            <Link href="/profile" className={cn(buttonVariants({ variant: "default" }), "w-full bg-slate-900 hover:bg-slate-800 text-white font-bold shadow-sm text-xs h-10 rounded-lg")}>
+              อัปเดตข้อมูลโปรไฟล์ <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
           </CardContent>
         </Card>
 
-        {/* Quick Links */}
-        <Card className="col-span-12 lg:col-span-8 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white/60 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-xl">กิจกรรมที่แนะนำสำหรับคุณ</CardTitle>
-            <CardDescription className="text-base">เริ่มต้นเส้นทางอาชีพของคุณด้วยขั้นตอนเหล่านี้</CardDescription>
+        {/* Recommended Services Navigation Grid */}
+        <Card className="col-span-12 lg:col-span-8 border border-slate-200 shadow-sm bg-white rounded-xl">
+          <CardHeader className="pb-3 border-b border-slate-100 bg-slate-50/60">
+            <CardTitle className="text-sm font-bold text-slate-900">
+              บริการและเครื่องมือพัฒนาสายอาชีพ
+            </CardTitle>
+            <CardDescription className="text-xs text-slate-500">
+              เครื่องมือเตรียมความพร้อมฝึกงาน สหกิจศึกษา และเส้นทางอาชีพ
+            </CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+          <CardContent className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/assessment">
-              <div className="flex flex-col justify-between p-6 rounded-2xl border border-slate-100 bg-white hover:border-green-300 hover:shadow-[0_8px_30px_rgb(22,163,74,0.12)] transition-all duration-300 group cursor-pointer h-full relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/5 rounded-full blur-2xl group-hover:bg-green-500/10 transition-colors"></div>
+              <div className="p-5 rounded-xl border border-slate-200 bg-white hover:border-green-500 hover:shadow-sm transition-all group cursor-pointer h-full flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-green-700 transition-colors">ทำแบบประเมินทักษะ</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">ค้นหาสายงานวิศวกรรมที่เหมาะสมกับตัวคุณ และดูว่าคุณเหมาะกับสายงานไหนมากที่สุด</p>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-green-600 transition-colors">
+                      แบบประเมินสมรรถนะ
+                    </h3>
+                    <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200">
+                      5 หมวดวิศวกรรม
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    ประเมินความถนัดเชิงลึกเพื่อค้นหาสายงานและตำแหน่งฝึกงานที่เหมาะสม
+                  </p>
                 </div>
-                <div className="mt-6 flex items-center text-sm font-semibold text-green-600 group-hover:text-green-700">
-                  เริ่มทำประเมิน <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <div className="mt-4 flex items-center text-xs font-semibold text-green-600 group-hover:translate-x-0.5 transition-transform">
+                  เริ่มทำแบบประเมิน <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
                 </div>
               </div>
             </Link>
-            
+
             <Link href="/explorer">
-              <div className="flex flex-col justify-between p-6 rounded-2xl border border-slate-100 bg-white hover:border-indigo-300 hover:shadow-[0_8px_30px_rgb(99,102,241,0.12)] transition-all duration-300 group cursor-pointer h-full relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-colors"></div>
+              <div className="p-5 rounded-xl border border-slate-200 bg-white hover:border-green-500 hover:shadow-sm transition-all group cursor-pointer h-full flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-indigo-700 transition-colors">สำรวจสายอาชีพ</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">เรียนรู้เกี่ยวกับเงินเดือน ทักษะที่ต้องการในตลาด และโอกาสเติบโตในแต่ละสายอาชีพ</p>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-green-600 transition-colors">
+                      สำรวจสายอาชีพ
+                    </h3>
+                    <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200">
+                      100 ตำแหน่งงาน
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    ค้นหาข้อมูลเงินเดือนแรกบรรจุ ทักษะที่ต้องการ และบริษัทชั้นนำ
+                  </p>
                 </div>
-                <div className="mt-6 flex items-center text-sm font-semibold text-indigo-600 group-hover:text-indigo-700">
-                  ดูสายอาชีพ <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <div className="mt-4 flex items-center text-xs font-semibold text-green-600 group-hover:translate-x-0.5 transition-transform">
+                  สำรวจสายอาชีพทั้งหมด <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/internships">
+              <div className="p-5 rounded-xl border border-slate-200 bg-white hover:border-green-500 hover:shadow-sm transition-all group cursor-pointer h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-green-600 transition-colors">
+                      ค้นหาที่ฝึกงาน & สหกิจ
+                    </h3>
+                    <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200">
+                      ตำแหน่งงานอัปเดต
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    ค้นหาและสมัครตำแหน่งฝึกงานภาคฤดูร้อนและสหกิจศึกษาโดยตรง
+                  </p>
+                </div>
+                <div className="mt-4 flex items-center text-xs font-semibold text-green-600 group-hover:translate-x-0.5 transition-transform">
+                  ค้นหาตำแหน่งฝึกงาน <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/network">
+              <div className="p-5 rounded-xl border border-slate-200 bg-white hover:border-green-500 hover:shadow-sm transition-all group cursor-pointer h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-green-600 transition-colors">
+                      เครือข่ายศิษย์เก่า KU
+                    </h3>
+                    <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200">
+                      Alumni Mentors
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    เชื่อมต่อขอคำแนะนำการเตรียมตัวฝึกงานจากพี่ๆ ศิษย์เก่าวิศวกร
+                  </p>
+                </div>
+                <div className="mt-4 flex items-center text-xs font-semibold text-green-600 group-hover:translate-x-0.5 transition-transform">
+                  ดูเครือข่ายศิษย์เก่า <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
                 </div>
               </div>
             </Link>
@@ -99,36 +177,36 @@ export default function DashboardPage() {
       </div>
 
       {/* Upcoming Events */}
-      <div className="mt-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">กิจกรรมที่กำลังจะมาถึง</h2>
-          <Link href="/events" className="text-sm font-medium text-green-600 hover:text-green-700 flex items-center">
-            ดูทั้งหมด <ChevronRight className="w-4 h-4 ml-0.5" />
-          </Link>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-bold text-slate-900">กิจกรรมเตรียมความพร้อมสายอาชีพ</h2>
+            <p className="text-xs text-slate-500 mt-0.5">งานเวิร์กช็อป สัมมนา และ KU Engineering Career Fair</p>
+          </div>
         </div>
-        
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+
+        <div className="grid gap-4 md:grid-cols-3">
           {[
-            { title: "Tech Company Resume Clinic", date: "28 มิ.ย. 2026", time: "13:00 - 15:00", type: "Workshop", color: "bg-blue-500", lightColor: "bg-blue-50 text-blue-700" },
-            { title: "Alumni Talk: ชีวิตวิศวกรซอฟต์แวร์ที่ Google", date: "2 ก.ค. 2026", time: "18:00 - 19:30", type: "Seminar", color: "bg-amber-500", lightColor: "bg-amber-50 text-amber-700" },
-            { title: "KU Engineering Career Fair 2026", date: "15 ก.ค. 2026", time: "09:00 - 16:00", type: "Job Fair", color: "bg-green-500", lightColor: "bg-green-50 text-green-700" }
+            { title: "Tech Resume & Portfolio Clinic", date: "28 มิ.ย. 2026", time: "13:00 - 15:00", type: "Workshop" },
+            { title: "Alumni Talk: เส้นทางวิศวกรซอฟต์แวร์ที่ Google", date: "2 ก.ค. 2026", time: "18:00 - 19:30", type: "Seminar" },
+            { title: "KU Engineering Career Fair 2026", date: "15 ก.ค. 2026", time: "09:00 - 16:00", type: "Job Fair" }
           ].map((event, i) => (
-            <Card key={i} className="border-none shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 overflow-hidden relative group">
-              <div className={`absolute top-0 left-0 w-1.5 h-full ${event.color}`}></div>
-              <CardHeader className="pb-3 pl-6">
-                <div className="flex justify-between items-start mb-3">
-                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider ${event.lightColor}`}>
-                    {event.type}
-                  </span>
+            <Card key={i} className="border border-slate-200 shadow-sm bg-white hover:border-slate-300 transition-all rounded-xl">
+              <CardContent className="p-5 flex flex-col justify-between h-full">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <Badge variant="secondary" className="bg-slate-100 text-slate-700 text-[10px] font-semibold border border-slate-200">
+                      {event.type}
+                    </Badge>
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug mb-2">{event.title}</h3>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium mb-4">
+                    <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{event.date} • {event.time}</span>
+                  </div>
                 </div>
-                <CardTitle className="text-lg leading-tight group-hover:text-green-600 transition-colors line-clamp-2">{event.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-6">
-                <div className="flex items-center gap-2 text-sm text-slate-500 mb-6 font-medium">
-                  <Calendar className="w-4 h-4 text-slate-400" />
-                  <span>{event.date} • {event.time}</span>
-                </div>
-                <Button variant="outline" className="w-full border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium">
+
+                <Button variant="outline" size="sm" className="w-full border-slate-200 text-slate-700 font-semibold text-xs h-9 hover:bg-slate-50">
                   ลงทะเบียนเข้าร่วม
                 </Button>
               </CardContent>

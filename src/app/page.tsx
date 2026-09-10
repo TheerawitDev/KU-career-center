@@ -7,8 +7,12 @@ import { TopNav } from "@/components/layout/top-nav";
 export default function LandingPage() {
   const router = useRouter();
 
-  const handleLogin = () => {
+  const handleStudentLogin = () => {
     router.push("/dashboard");
+  };
+
+  const handleClientPortal = () => {
+    router.push("/client/talents");
   };
 
   return (
@@ -30,14 +34,26 @@ export default function LandingPage() {
             เป็นผู้นำ สร้างสรรค์ นำแรงบันดาลใจ
           </h2>
           <p className="text-[17px] text-slate-500 max-w-lg mx-auto leading-relaxed">
-            ร่วมสร้างสรรค์เทคโนโลยีในรั้วมหาวิทยาลัยของคุณ
+            ศูนย์รวมโอกาสทางอาชีพของนิสิตวิศวกรรมศาสตร์ มหาวิทยาลัยเกษตรศาสตร์
             <br />
-            ด้วยแพลตฟอร์มจากคณะวิศวกรรมศาสตร์
+            เชื่อมโยงนิสิตและสถานประกอบการชั้นนำด้วยเทคโนโลยี
           </p>
 
-          <button onClick={handleLogin} className="mt-8 px-8 py-3 bg-[#1a202c] text-white rounded-full font-medium shadow-md hover:bg-black transition-colors">
-            เข้าสู่ระบบด้วย KU SSO
-          </button>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center">
+            <button
+              onClick={handleStudentLogin}
+              className="px-8 py-3.5 bg-[#1a202c] text-white rounded-full font-medium shadow-md hover:bg-black transition-all text-sm"
+            >
+              เข้าสู่ระบบด้วย KU SSO
+            </button>
+
+            <button
+              onClick={handleClientPortal}
+              className="px-8 py-3.5 bg-green-600 text-white rounded-full font-bold shadow-md hover:bg-green-700 transition-all text-sm"
+            >
+              สำหรับสถานประกอบการ
+            </button>
+          </div>
         </motion.div>
 
         {/* Hero Image with Floating Icons */}
